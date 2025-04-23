@@ -1,0 +1,22 @@
+{
+  "name": "8510-final-project",
+  "version": "1.0.0",
+  "description": "8510 final project repo",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MasterEchez/8510-final-project.git"
+  },
+  "author": "Emeka Echezona, Diego Coello",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MasterEchez/8510-final-project/issues"
+  },
+  "homepage": "https://github.com/MasterEchez/8510-final-project#readme",
+  "dependencies": {
+    "pokemon-showdown": "^0.11.10"
+  }
+}
