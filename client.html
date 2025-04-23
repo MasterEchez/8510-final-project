@@ -3,10 +3,27 @@
 <head>
     <meta charset="utf-8">
     <title>Pokemon Battles IRL</title>
+
+    <style>
+        #canvas {
+            display: none;
+        }
+    </style>
 </head>
 
 <body>
-    <script src="src/PokemonClient.ts"></script>
+    <div class="camera">
+        <video id="video">Video stream not available.</video>
+        <button id="start-button">Take photo</button>
+    </div>
+
+    <canvas id="canvas"></canvas>
+    <div class="output">
+        <img id="photo" alt="The screen capture will appear in this box." />
+    </div>
+
+
+    <script src="dist/client-bundle.js"></script>
 </body>
 
 </html>

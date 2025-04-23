@@ -4,7 +4,10 @@
   "description": "8510 final project repo",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile": "npx browserify src/PokemonClient.js -v --debug -p tsify -o dist/client-bundle.js",
+    "lint": "npx eslint . --ext .ts",
+    "watchify-client": "mkdir -p dist && npx watchify src/PokemonClient.js -v --debug -p tsify -o dist/client-bundle.js"
   },
   "repository": {
     "type": "git",
@@ -18,5 +21,22 @@
   "homepage": "https://github.com/MasterEchez/8510-final-project#readme",
   "dependencies": {
     "pokemon-showdown": "^0.11.10"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "^18.11.18",
+    "@types/node-fetch": "^2.5.12",
+    "@typescript-eslint/eslint-plugin": "^5.50.0",
+    "@typescript-eslint/parser": "^5.50.0",
+    "browserify": "^17.0.0",
+    "eslint": "^8.33.0",
+    "eslint-plugin-jsdoc": "^39.7.5",
+    "mocha": "^10.2.0",
+    "nyc": "^15.1.0",
+    "source-map-support": "^0.5.21",
+    "tsify": "^5.0.4",
+    "typescript": "^4.9.5",
+    "watchify": "^4.0.0"
   }
 }
