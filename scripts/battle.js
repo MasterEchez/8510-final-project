@@ -1,5 +1,5 @@
 const Sim = require('pokemon-showdown');
-const {battleStates, gestures} = require('./constants');
+const {battleStates, gestures, gestureToChoice} = require('./constants');
 
 let simState = battleStates.CONFIRM_USERS;
 let p1_gesture = null;
@@ -20,6 +20,9 @@ const pollForGestures = () => { // should come from Diego module
 
     (async () => {
         for await (const output of stream) {
+            if (output.includes('end')) {
+                simState = battleStates.BATTLE_OVER;
+            }
             console.log(output);
         }
     })();
