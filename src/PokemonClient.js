@@ -1,3 +1,5 @@
+// import {p1_gesture, p2_gesture, p1_state, p2_state} from "../scripts/battle"
+
 (() => {
   // The width and height of the captured photo. We will set the
   // width to the value defined here, but the height will be
@@ -12,9 +14,7 @@
   // The various HTML elements we need to configure or control. These
   // will be set by the startup() function.
   let video = null;
-  let canvas = null;
   let userInterface = null;
-  let clientState = null;
 
   function startup() {
     video = document.getElementById("video");
@@ -70,12 +70,14 @@
     userInterface.style.height = `${height}px`;
   }
 
+  // Update client according to current state
+  // function updateClient() {
+  //   if ()
+  // }
+
   // Set up our event listener to run the startup process
   // once loading is complete.
   window.addEventListener("load", startup, false);
 
   window.onresize = resizeVideo;
-
-  // Update client according to current state
-  // function updateState() {}
 })();
