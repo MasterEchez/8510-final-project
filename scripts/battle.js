@@ -3,6 +3,7 @@ const {battleStates, gestures, gestureToChoice} = require('./constants');
 const {simplifySideUpdate} = require('./battle-helper');
 
 let simState = battleStates.CONFIRM_USERS;
+let toAnimate = [];
 let p1_gesture = null;
 let p2_gesture = null;
 let p1_state = {};
@@ -18,7 +19,7 @@ const pollForGestures = () => { // should come from Diego module
         await new Promise(resolve => setTimeout(resolve, 1000));
     }
 
-    simState = battleStates.BATTLE_WAITING;
+    simState = battleStates.BATTLE_SHOW;
     const stream = new Sim.BattleStream();
 
     (async () => {
@@ -66,22 +67,25 @@ const pollForGestures = () => { // should come from Diego module
 
     // go between waiting => display states and write to stream
     // based on user inputs
-    // while (simState !== battleStates.BATTLE_OVER) {
-    //     console.log(`state: ${simState}`);
-    //     [p1_gesture, p2_gesture] = pollForGestures();
+    // TODO: remove next two lines eventually
+    setTimeout(() => simState = battleStates.BATTLE_WAITING, 1000);
+    setTimeout(() => simState = battleStates.BATTLE_OVER, 3000);
+    while (simState !== battleStates.BATTLE_OVER) {
+        console.log(`state: ${simState}`);
+        [p1_gesture, p2_gesture] = pollForGestures();
 
-    //     switch (simState) {
-    //         case battleStates.BATTLE_WAITING:
-    //             // try to send moves
-    //             break;
-    //         case battleStates.BATTLE_SHOW:
-    //             // do nothing
-    //             break;
-    //         default:
-    //             break;
-    //     }
+        switch (simState) {
+            case battleStates.BATTLE_WAITING:
+                // try to send moves
+                break;
+            case battleStates.BATTLE_SHOW:
+                // do nothing
+                break;
+            default:
+                break;
+        }
 
-    //     console.log("__________");
-    //     await new Promise(resolve => setTimeout(resolve, 200));
-    // }
+        console.log("__________");
+        await new Promise(resolve => setTimeout(resolve, 200));
+    }
 })();
