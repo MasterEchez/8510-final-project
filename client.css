@@ -55,9 +55,9 @@ body {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
-    width: 500px;
-    height: 200px;
-    font-size: 30px;
+    width: 300px;
+    height: 100px;
+    font-size: 20px;
     font-weight: bold;
     background-color: rgba(255, 255, 255, 0.5);
 }
@@ -66,8 +66,8 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 246px;
-    height: 96px;
+    width: 146px;
+    height: 46px;
     border-style: solid;
     border-width: 2px;
     border-color: black;
