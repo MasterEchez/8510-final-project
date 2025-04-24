@@ -20,6 +20,7 @@ const pollForGestures = () => {
 }
 
 ( async () => {
+    [p1_gesture, p2_gesture] = pollForGestures();
     while (!(p1_gesture === gestures.THUMBS_UP && p2_gesture === gestures.THUMBS_UP)) {
         console.log("waiting for both sides to be thumbs up");
         [p1_gesture, p2_gesture] = pollForGestures();
