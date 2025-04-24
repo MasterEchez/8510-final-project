@@ -1,8 +1,9 @@
 const Sim = require('pokemon-showdown');
 const {battleStates, gestures, gestureToChoice} = require('./constants');
-const {simplifyServerOutput} = require('./battle-helper');
+const {simplifySideUpdate} = require('./battle-helper');
 
 let simState = battleStates.CONFIRM_USERS;
+let toAnimate = [];
 let p1_gesture = null;
 let p2_gesture = null;
 let p1_state = {};
@@ -18,7 +19,7 @@ const pollForGestures = () => { // should come from Diego module
         await new Promise(resolve => setTimeout(resolve, 1000));
     }
 
-    simState = battleStates.BATTLE_WAITING;
+    simState = battleStates.BATTLE_SHOW;
     const stream = new Sim.BattleStream();
 
     (async () => {
@@ -27,7 +28,7 @@ const pollForGestures = () => { // should come from Diego module
             // console.log(msgParts);
             switch(msgParts[0]) {
                 case 'sideupdate':
-                    const [type, simpleObj] = simplifyServerOutput(msgParts[2]);
+                    const [type, simpleObj] = simplifySideUpdate(msgParts[2]);
                     switch (type) {
                         case 'request':
                             if (msgParts[1] === 'p1') {
@@ -42,6 +43,10 @@ const pollForGestures = () => { // should come from Diego module
                             console.log("error from server output");
                             break;
                     }
+                    break;
+                case 'update':
+                    console.log(msgParts);
+                    console.log("generate list of animations, set state to show");
                     break;
                 default:
                     console.log(msgParts[0]);
@@ -62,4 +67,25 @@ const pollForGestures = () => { // should come from Diego module
 
     // go between waiting => display states and write to stream
     // based on user inputs
+    // TODO: remove next two lines eventually
+    setTimeout(() => simState = battleStates.BATTLE_WAITING, 1000);
+    setTimeout(() => simState = battleStates.BATTLE_OVER, 3000);
+    while (simState !== battleStates.BATTLE_OVER) {
+        console.log(`state: ${simState}`);
+        [p1_gesture, p2_gesture] = pollForGestures();
+
+        switch (simState) {
+            case battleStates.BATTLE_WAITING:
+                // try to send moves
+                break;
+            case battleStates.BATTLE_SHOW:
+                // do nothing
+                break;
+            default:
+                break;
+        }
+
+        console.log("__________");
+        await new Promise(resolve => setTimeout(resolve, 200));
+    }
 })();
