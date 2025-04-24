@@ -3,13 +3,20 @@ const {battleStates, gestures, gestureToChoice} = require('./constants');
 const {simplifySideUpdate} = require('./battle-helper');
 
 let simState = battleStates.CONFIRM_USERS;
+
+// list of events to animate
+let startAnimation = false;
 let toAnimate = [];
-let p1_gesture = null;
-let p2_gesture = null;
+
+// read from these as Diego updates
+let p1_gesture = gestures.THUMBS_UP;
+let p2_gesture = gestures.THUMBS_UP;
+
+// update these values so Diego can read from them
 let p1_state = {};
 let p2_state = {};
-const pollForGestures = () => { // should come from Diego module
-    return [gestures.THUMBS_UP, gestures.THUMBS_UP];
+const pollForGestures = () => {
+    return [p1_gesture, p2_gesture];
 }
 
 ( async () => {
