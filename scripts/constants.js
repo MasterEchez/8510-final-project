@@ -18,12 +18,12 @@ export const gestures = {
 export const gestureToChoice = (gesture) => {
     switch (gesture) {
         case gestures.THUMBS_UP:
-            return 'move 1';
+            return '1';
         case gestures.THUMBS_DOWN:
-            return 'move 2';
+            return '2';
         case gestures.VICTORY:
-            return 'move 3';
+            return '3';
         case gestures.POINTING_UP:
-            return 'move 4';
+            return '4';
     }
 }
