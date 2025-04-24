@@ -61,8 +61,8 @@ const getSimState = async () => {
         case "update":
           console.log(msgParts);
           console.log("generate list of animations, set state to show");
-          // simState = battleStates.BATTLE_SHOW; //SHOULD BE THIS LINE FOR TESTING
-          simState = battleStates.BATTLE_WAITING; // FOR TESTING
+          simState = battleStates.BATTLE_SHOW; //SHOULD BE THIS LINE FOR ACTUAL IMPLEMENTATION
+          //   simState = battleStates.BATTLE_WAITING; // FOR TESTING
           break;
         default:
           console.log(msgParts[0]);
