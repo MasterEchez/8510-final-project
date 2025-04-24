@@ -52,7 +52,7 @@ const pollForGestures = () => { // should come from Diego module
         }
     })();
 
-    stream.write(`>start {"formatid":"gen7randombattle"}\n` +
+    stream.write(`>start {"formatid":"gen9randombattle"}\n` +
         `>player p1 {"name":"Player1"}\n` +
         `>player p2 {"name":"Player2"}`);
 
