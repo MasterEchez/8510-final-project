@@ -27,19 +27,27 @@ const pollForGestures = () => { // should come from Diego module
             // console.log(msgParts);
             switch(msgParts[0]) {
                 case 'sideupdate':
-                    if (msgParts[1] === 'p1') {
-                        p1_state = simplifyServerOutput(msgParts[2]);
-                        console.log(p1_state);
-                    } else {
-                        p2_state = simplifyServerOutput(msgParts[2]);
-                        console.log(p2_state);
+                    const [type, simpleObj] = simplifyServerOutput(msgParts[2]);
+                    switch (type) {
+                        case 'request':
+                            if (msgParts[1] === 'p1') {
+                                p1_state = simpleObj;
+                                console.log(p1_state);
+                            } else {
+                                p2_state = simpleObj;
+                                console.log(p2_state);
+                            }
+                            break;
+                        case 'error':
+                            console.log("error from server output");
+                            break;
                     }
                     break;
                 default:
                     console.log(msgParts[0]);
                     break;
             }
-            console.log("\n");
+            console.log("____\n");
             // console.log(output+"\n____");
         }
     })();
