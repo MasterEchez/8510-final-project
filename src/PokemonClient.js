@@ -1,5 +1,5 @@
 // import {p1_gesture, p2_gesture, p1_state, p2_state} from "../scripts/battle"
-import myEmitter from "../scripts/battle";
+// import myEmitter from "../scripts/battle";
 
 (() => {
   // The width and height of the captured photo. We will set the
