@@ -19,6 +19,10 @@ const pollForGestures = () => {
     return [p1_gesture, p2_gesture];
 }
 
+const getSimState = async () => {
+    return simState;
+}
+
 ( async () => {
     [p1_gesture, p2_gesture] = pollForGestures();
     while (!(p1_gesture === gestures.THUMBS_UP && p2_gesture === gestures.THUMBS_UP)) {
@@ -41,10 +45,10 @@ const pollForGestures = () => {
                         case 'request':
                             if (msgParts[1] === 'p1') {
                                 p1_state = simpleObj;
-                                console.log(p1_state);
+                                // console.log(p1_state);
                             } else {
                                 p2_state = simpleObj;
-                                console.log(p2_state);
+                                // console.log(p2_state);
                             }
                             break;
                         case 'error':
@@ -77,12 +81,16 @@ const pollForGestures = () => {
     // based on user inputs
     // TODO: remove next two lines eventually
     setTimeout(() => simState = battleStates.BATTLE_WAITING, 1000);
-    setTimeout(() => simState = battleStates.BATTLE_OVER, 3000);
-    while (simState !== battleStates.BATTLE_OVER) {
+    setTimeout(() => simState = battleStates.BATTLE_OVER, 2000);
+    while (true) {
+        const currentSimState = await getSimState();
+        if (currentSimState === battleStates.BATTLE_OVER) {
+            break;
+        }
         console.log(`state: ${simState}`);
         [p1_gesture, p2_gesture] = pollForGestures();
 
-        switch (simState) {
+        switch (currentSimState) {
             case battleStates.BATTLE_WAITING:
                 // try to send moves
                 break;
