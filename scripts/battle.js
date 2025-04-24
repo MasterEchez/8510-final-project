@@ -44,7 +44,8 @@ const pollForGestures = () => { // should come from Diego module
                     }
                     break;
                 case 'update':
-                    console.log("play animation, set state to waiting");
+                    console.log(msgParts);
+                    console.log("generate list of animations, set state to show");
                     break;
                 default:
                     console.log(msgParts[0]);
@@ -71,8 +72,10 @@ const pollForGestures = () => { // should come from Diego module
 
     //     switch (simState) {
     //         case battleStates.BATTLE_WAITING:
+    //             // try to send moves
     //             break;
     //         case battleStates.BATTLE_SHOW:
+    //             // do nothing
     //             break;
     //         default:
     //             break;
