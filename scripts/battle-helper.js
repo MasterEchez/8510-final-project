@@ -5,6 +5,7 @@ export const simplifySideUpdate = (serverOutput) => {
     const [_, type, preparsed] = serverOutput.split('|');
     const obj = JSON.parse(preparsed);
     let simpleObj = {};
+    console.log(serverOutput);
 
     switch (type) {
         case 'request':
