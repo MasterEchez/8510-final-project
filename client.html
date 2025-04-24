@@ -3,25 +3,46 @@
 <head>
     <meta charset="utf-8">
     <title>Pokemon Battles IRL</title>
-
-    <style>
-        #canvas {
-            display: none;
-        }
-    </style>
+    <link rel="stylesheet" href="client.css">
 </head>
 
 <body>
-    <div class="camera">
-        <video id="video">Video stream not available.</video>
-        <button id="start-button">Take photo</button>
-    </div>
+    <div class="fullscreen-wrapper">
+        
+        <div id="interface">
+            <div id="hud">
+                <!-- <h1>Both players make a thumbs up 👍 to start!</h1> -->
+                <div class="player">
+                    <h2>Jigglypuff</h2>
+                    <div class="health-bar"><span>100%</span></div>
+                    <ul class="move-list">
+                        <li><span>Sing👍</span></li>
+                        <li><span>Rest👎</span></li>
+                        <li><span>Tackle✌</span></li>
+                        <li><span>Leer☝</span></li>
+                    </ul>
+                </div>
+                <div class="player">
+                    <h2>Pikachu</h2>
+                    <div class="health-bar"><span>100%</span></div>
+                    <ul class="move-list">
+                        <li><span>Thunderbolt👍</span></li>
+                        <li><span>Quick Attack👎</span></li>
+                        <li><span>Iron Tail✌</span></li>
+                        <li><span>Slam☝</span></li>
+                    </ul>
+                </div>
 
-    <canvas id="canvas"></canvas>
+            </div>
+            <video id="video">Video stream not available.</video>
+        </div>
+        <!-- <button id="start-button">Take photo</button> -->
+    </div>
+    
+    <!-- <canvas id="canvas"></canvas>
     <div class="output">
         <img id="photo" alt="The screen capture will appear in this box." />
-    </div>
-
+    </div> -->
 
     <script src="dist/client-bundle.js"></script>
 </body>
