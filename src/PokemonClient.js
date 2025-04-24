@@ -1,4 +1,5 @@
 // import {p1_gesture, p2_gesture, p1_state, p2_state} from "../scripts/battle"
+import myEmitter from "../scripts/battle";
 
 (() => {
   // The width and height of the captured photo. We will set the
@@ -80,4 +81,14 @@
   window.addEventListener("load", startup, false);
 
   window.onresize = resizeVideo;
+
+  myEmitter.on("p1_state", (data) => {
+    console.log("p1_state received:", data);
+  });
+  myEmitter.on("p2_state", (data) => {
+    console.log("p2_state received:", data);
+  });
+  myEmitter.on("animate", (data) => {
+    console.log("animate received:", data);
+  });
 })();

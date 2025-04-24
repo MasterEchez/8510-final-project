@@ -1,11 +1,14 @@
 const Sim = require("pokemon-showdown");
 const { battleStates, gestures, gestureToChoice } = require("./constants");
 const { simplifySideUpdate } = require("./battle-helper");
+const { EventEmitter } = require("events");
+
+const myEmitter = new EventEmitter();
+module.exports = myEmitter;
 
 let simState = battleStates.CONFIRM_USERS;
 
 // list of events to animate
-let startAnimation = false;
 let toAnimate = [];
 
 // read from these as Diego updates
@@ -47,9 +50,11 @@ const getSimState = async () => {
             case "request":
               if (msgParts[1] === "p1") {
                 p1_state = simpleObj;
+                myEmitter.emit("p1_state", { message: p1_state });
                 // console.log(p1_state);
               } else {
                 p2_state = simpleObj;
+                myEmitter.emit("p2_state", { message: p2_state });
                 // console.log(p2_state);
               }
               break;
@@ -62,6 +67,7 @@ const getSimState = async () => {
           console.log(msgParts);
           console.log("generate list of animations, set state to show");
           simState = battleStates.BATTLE_SHOW; //SHOULD BE THIS LINE FOR ACTUAL IMPLEMENTATION
+          myEmitter.emit("animate", { message: toAnimate });
           //   simState = battleStates.BATTLE_WAITING; // FOR TESTING
           break;
         default:
