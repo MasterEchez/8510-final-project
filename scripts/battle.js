@@ -51,11 +51,11 @@ const getSimState = async () => {
               if (msgParts[1] === "p1") {
                 p1_state = simpleObj;
                 myEmitter.emit("p1_state", { message: p1_state });
-                // console.log(p1_state);
+                console.log(p1_state);
               } else {
                 p2_state = simpleObj;
                 myEmitter.emit("p2_state", { message: p2_state });
-                // console.log(p2_state);
+                console.log(p2_state);
               }
               break;
             case "error":
@@ -99,7 +99,7 @@ const getSimState = async () => {
     if (currentSimState === battleStates.BATTLE_OVER) {
       break;
     }
-    console.log(`state: ${simState}`);
+    // console.log(`state: ${simState}`);
     [p1_gesture, p2_gesture] = pollForGestures();
 
     switch (currentSimState) {
@@ -114,7 +114,7 @@ const getSimState = async () => {
         break;
     }
 
-    console.log("__________");
+    // console.log("__________");
     await new Promise((resolve) => setTimeout(resolve, 200));
   }
 })();
