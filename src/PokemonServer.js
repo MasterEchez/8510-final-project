@@ -1,13 +1,16 @@
-const express = require('express');
+const express = require("express");
 const Sim = require("pokemon-showdown");
-const { battleStates, gestures, gestureToChoice } = require("../scripts/constants");
+const {
+  battleStates,
+  gestures,
+  gestureToChoice,
+} = require("../scripts/constants");
 const { simplifySideUpdate } = require("../scripts/battle-helper");
 
 let simState = battleStates.CONFIRM_USERS;
 
 // list of events to animate
 let toAnimate = [];
-
 
 //
 //
@@ -16,17 +19,22 @@ let toAnimate = [];
 const app = express();
 const port = 3000;
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
+app.get("/", (req, res) => {
+  res.send("Hello World!");
 });
 
-
-app.post('start', (req, res) => {
-    // start rand bat, return data
+app.get("/getPlayerStates", (req, res) => {
+  res.send("Player states");
 });
 
-app.post('gestures', (req, res) => {
-    // record gestures, update state machine, return relevant update
+app.post("start", (req, res) => {
+  // start rand bat, return data
+  res.send("update");
+});
+
+app.post("gestures", (req, res) => {
+  // record gestures, update state machine, return relevant update
+  res.send("update");
 });
 
 app.listen(port, () => {
