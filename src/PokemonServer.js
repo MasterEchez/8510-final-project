@@ -7,10 +7,19 @@ const {
 } = require("../scripts/constants");
 const { simplifySideUpdate } = require("../scripts/battle-helper");
 
-let simState = battleStates.CONFIRM_USERS;
+simState = battleStates.BATTLE_SHOW;
+const stream = new Sim.BattleStream();
+const streams = new Sim.getPlayerStreams(stream);
+const p1Stream = streams.p1;
+const p2Stream = streams.p2;
+const omniStream = streams.omniscient;
 
-// list of events to animate
-let toAnimate = [];
+let getState = async () => {
+  let p1 = (await p1Stream.next()).value;
+  let p2 = (await p2Stream.next()).value;
+  let omni = (await omniStream.next()).value;
+  return { p1, p2, omni };
+};
 
 //
 //
@@ -23,18 +32,21 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-app.get("/getPlayerStates", (req, res) => {
-  res.send("Player states");
-});
-
-app.post("start", (req, res) => {
+app.post("/start", async (req, res) => {
   // start rand bat, return data
-  res.send("update");
+  stream.write(
+    `>start {"formatid":"gen9randombattle"}\n` +
+      `>player p1 {"name":"Player1"}\n` +
+      `>player p2 {"name":"Player2"}`
+  );
+  const msg = await getState();
+  console.log(msg);
+  res.send(msg);
 });
 
-app.post("gestures", (req, res) => {
-  // record gestures, update state machine, return relevant update
-  res.send("update");
+app.post("/moves", (req, res) => {
+  // writes moves to stream and returns output
+  res.send("moves");
 });
 
 app.listen(port, () => {
