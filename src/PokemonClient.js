@@ -1,4 +1,8 @@
-// import {p1_gesture, p2_gesture, p1_state, p2_state} from "../scripts/battle"
+// import {
+//   GestureRecognizer,
+//   FilesetResolver,
+// } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3";
+// import { EventEmitter } from "events";
 
 (() => {
   // The width and height of the captured photo. We will set the
@@ -14,10 +18,28 @@
   // The various HTML elements we need to configure or control. These
   // will be set by the startup() function.
   let video = null;
+  // let canvas = null;
+  // let photo = null;
   let userInterface = null;
+
+  // //vision
+  // // Create task for image file processing:
+  // const vision = await FilesetResolver.forVisionTasks(
+  //   // path/to/wasm/root
+  //   "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm "
+  // );
+  // const gestureRecognizer = await GestureRecognizer.createFromOptions(vision, {
+  //   baseOptions: {
+  //     modelAssetPath:
+  //       "https://storage.googleapis.com/mediapipe-tasks/gesture_recognizer/gesture_recognizer.task",
+  //   },
+  //   numHands: 2,
+  // });
 
   function startup() {
     video = document.getElementById("video");
+    // canvas = document.getElementById("canvas");
+    // photo = document.getElementById("photo");
     userInterface = document.getElementById("interface");
 
     navigator.mediaDevices
@@ -43,6 +65,8 @@
 
           video.setAttribute("width", width);
           video.setAttribute("height", height);
+          // canvas = setAttribute("width", width);
+          // canvas = setAttribute("height", height);
           userInterface.style.width = `${width}px`;
           userInterface.style.height = `${height}px`;
           streaming = true;
@@ -50,7 +74,55 @@
       },
       false
     );
+
+    // startButton.addEventListener(
+    //   "click",
+    //   (ev) => {
+    //     takePicture();
+    //     ev.preventDefault();
+    //   },
+    //   false
+    // );
+
+    // clearPhoto();
+
+    // const intervalId = setInterval(() => {
+    //   const pictureData = takePicture();
+    //   const gestureRecognitionResult = gestureRecognizer.recognize(image);
+    //   console.log(gestureRecognitionResult);
+    // }, 1000);
   }
+
+  // Fill the photo with an indication that none has been captured.
+  // function clearPhoto() {
+  //   const context = canvas.getContext("2d");
+  //   context.fillStyle = "#AAA";
+  //   context.fillRect(0, 0, canvas.width, canvas.height);
+
+  //   const data = canvas.toDataURL("image/png");
+  //   return data;
+  //   // photo.setAttribute("src", data);
+  // }
+
+  // Capture a photo by fetching the current contents of the video
+  // and drawing it into a canvas, then converting that to a PNG
+  // format data URL. By drawing it on an offscreen canvas and then
+  // drawing that to the screen, we can change its size and/or apply
+  // other changes before drawing it.
+  // function takePicture() {
+  //   const context = canvas.getContext("2d");
+  //   if (width && height) {
+  //     canvas.width = width;
+  //     canvas.height = height;
+  //     context.drawImage(video, 0, 0, width, height);
+
+  //     const data = canvas.toDataURL("image/png");
+  //     return data;
+  //     // photo.setAttribute("src", data);
+  //   } else {
+  //     clearPhoto();
+  //   }
+  // }
 
   function resizeVideo() {
     const fullscreen = document.getElementsByClassName("fullscreen-wrapper")[0];
@@ -66,6 +138,8 @@
 
     video.setAttribute("width", width);
     video.setAttribute("height", height);
+    // canvas.setAttribute("width", width);
+    // canvas.setAttribute("height", height);
     userInterface.style.width = `${width}px`;
     userInterface.style.height = `${height}px`;
   }
@@ -80,4 +154,7 @@
   window.addEventListener("load", startup, false);
 
   window.onresize = resizeVideo;
+
+  // Update client according to current state
+  // function updateState() {}
 })();

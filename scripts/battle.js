@@ -61,8 +61,6 @@ const getSimState = async () => {
         case "update":
           console.log(msgParts);
           console.log("generate list of animations, set state to show");
-          // simState = battleStates.BATTLE_SHOW; //SHOULD BE THIS LINE FOR TESTING
-          simState = battleStates.BATTLE_WAITING; // FOR TESTING
           break;
         default:
           console.log(msgParts[0]);
@@ -86,7 +84,7 @@ const getSimState = async () => {
   // go between waiting => display states and write to stream
   // based on user inputs
   // TODO: remove next two lines eventually
-  // setTimeout(() => simState = battleStates.BATTLE_WAITING, 1000);
+  setTimeout(() => (simState = battleStates.BATTLE_WAITING), 1000);
   setTimeout(() => (simState = battleStates.BATTLE_OVER), 2000);
   while (true) {
     const currentSimState = await getSimState();
@@ -99,7 +97,6 @@ const getSimState = async () => {
     switch (currentSimState) {
       case battleStates.BATTLE_WAITING:
         // try to send moves
-        // stream.write(`>p1 move ${gestureToChoice(p1_gesture)}\n` + `>p2 move  ${gestureToChoice(p2_gesture)}`);
         break;
       case battleStates.BATTLE_SHOW:
         // do nothing
