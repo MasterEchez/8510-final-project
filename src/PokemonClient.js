@@ -1,8 +1,5 @@
-// import {
-//   GestureRecognizer,
-//   FilesetResolver,
-// } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3";
-// import { EventEmitter } from "events";
+// import {p1_gesture, p2_gesture, p1_state, p2_state} from "../scripts/battle"
+// import myEmitter from "../scripts/battle";
 
 (() => {
   // The width and height of the captured photo. We will set the
@@ -155,6 +152,13 @@
 
   window.onresize = resizeVideo;
 
-  // Update client according to current state
-  // function updateState() {}
+  myEmitter.on("p1_state", (data) => {
+    console.log("p1_state received:", data);
+  });
+  myEmitter.on("p2_state", (data) => {
+    console.log("p2_state received:", data);
+  });
+  myEmitter.on("animate", (data) => {
+    console.log("animate received:", data);
+  });
 })();
