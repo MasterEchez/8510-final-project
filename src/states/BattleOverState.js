@@ -1,4 +1,4 @@
-export class BattleOverState {
+class BattleOverState {
   constructor(playerThatWon) {
     this.playerThatWon = playerThatWon;
   }

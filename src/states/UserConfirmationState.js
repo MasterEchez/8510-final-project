@@ -1,4 +1,4 @@
-export class UserConfirmationState {
+class UserConfirmationState {
   constructor() {
     this.player1Ready = false;
     this.player2Ready = false;

@@ -1,6 +1,5 @@
 // import {p1_gesture, p2_gesture, p1_state, p2_state} from "../scripts/battle"
 // import myEmitter from "../scripts/battle";
-import { UserConfirmationState } from "./states/UserConfirmationState";
 
 // let state
 
@@ -23,7 +22,7 @@ async function main() {
   let userInterface = null;
 
   //state machine
-  // let currentState = new UserConfirmationState();
+  let currentState = new UserConfirmationState();
 
   // //vision
   // // Create task for image file processing:
@@ -158,18 +157,18 @@ async function main() {
 
   window.onresize = resizeVideo;
 
-  myEmitter.on("p1_state", (data) => {
-    console.log("p1_state received:", data);
-  });
-  myEmitter.on("p2_state", (data) => {
-    console.log("p2_state received:", data);
-  });
-  myEmitter.on("animate", (data) => {
-    console.log("animate received:", data);
-  });
+  // myEmitter.on("p1_state", (data) => {
+  //   console.log("p1_state received:", data);
+  // });
+  // myEmitter.on("p2_state", (data) => {
+  //   console.log("p2_state received:", data);
+  // });
+  // myEmitter.on("animate", (data) => {
+  //   console.log("animate received:", data);
+  // });
 
   //Which hud to display
-  // currentState.display();
+  currentState.display();
 }
 
 void main();

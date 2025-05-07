@@ -1,4 +1,4 @@
-export class BattleWaitingState {
+class BattleWaitingState {
   constructor(player1BattleState, player2BattleState) {
     this.player1BattleState = player1BattleState;
     this.player2BattleState = player2BattleState;

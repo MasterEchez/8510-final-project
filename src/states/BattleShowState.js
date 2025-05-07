@@ -1,4 +1,4 @@
-export class BattleShowState {
+class BattleShowState {
   constructor() {
     //animation and battle transition info
   }

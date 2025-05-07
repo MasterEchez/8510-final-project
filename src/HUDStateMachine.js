@@ -1,4 +1,4 @@
-export class HeadsUpDisplay {
+class HeadsUpDisplay {
   constructor(state) {
     this.state = state;
   }

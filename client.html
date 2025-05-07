@@ -4,10 +4,10 @@
     <meta charset="utf-8" />
     <title>Pokemon Battles IRL</title>
     <link rel="stylesheet" href="client.css" />
-    <script
+    <!-- <script
       src="https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision/vision_bundle.js"
       crossorigin="anonymous"
-    ></script>
+    ></script> -->
   </head>
 
   <body>
@@ -62,8 +62,12 @@
         <canvas class="output_canvas" id="output_canvas" width="1280" height="720" style="position: absolute; left: 0px; top: 0px;"></canvas>
         <p id='gesture_output' class="output">
       </div> -->
-
-    <script src="src/PokemonClient.js"></script>
-    <!-- <script src="scripts/battle.js"></script> -->
+    <script src="src/states/BattleOverState.js"></script>
+    <script src="src/states/BattleShowState.js"></script>
+    <script src="src/states/BattleWaitingState.js"></script>
+    <script src="src/states/UserConfirmationState.js"></script>
+    <script src="src/HUDStateMachine.js"></script>
+    <script src="src/PokemonClient.js" defer></script>
+    <!-- <script src="scripts/battle.js"></> -->
   </body>
 </html>
