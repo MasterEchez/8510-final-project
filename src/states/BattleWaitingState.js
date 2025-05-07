@@ -8,6 +8,10 @@ class BattleWaitingState {
     this.player2Action;
   }
 
+  get stateName() {
+    return battleStates.BATTLE_WAITING;
+  }
+
   display() {}
 
   checkPlayerGestures() {}
