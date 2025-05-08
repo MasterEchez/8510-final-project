@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const Sim = require("pokemon-showdown");
 const {
   battleStates,
@@ -83,14 +84,15 @@ let getState = async () => {
 // SERVER STARTED
 const app = express();
 app.use(express.json());
+app.use(cors());
 // app.use(express.urlencoded({ extended: true }));
 const port = 3000;
 
-app.get("/", (req, res) => {
+app.get("/", cors(), (req, res) => {
   res.send("Hello World!");
 });
 
-app.post("/start", async (req, res) => {
+app.post("/start", cors(), async (req, res) => {
   // start rand bat, return data
   [p1_updated, p2_updated, omni_updated] = [false, false, false];
   await stream.write(
@@ -103,7 +105,7 @@ app.post("/start", async (req, res) => {
   res.send(msg);
 });
 
-app.post("/moves", async (req, res) => {
+app.post("/moves", cors(), async (req, res) => {
   // writes moves to stream and returns output
   let body = req.body;
   // console.log(body);
