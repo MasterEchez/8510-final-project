@@ -2,8 +2,10 @@
   "name": "8510-final-project",
   "version": "1.0.0",
   "description": "8510 final project repo",
+  "type": "module",
+  "main": "src/PokemonClient.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "webpack --mode production"
   },
   "repository": {
     "type": "git",

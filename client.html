@@ -1,25 +1,48 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="UTF-8" />
     <title>Pokemon Battles IRL</title>
-    <link rel="stylesheet" href="client.css" />
-    <!-- <script
-      src="https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision/vision_bundle.js"
-      crossorigin="anonymous"
-    ></script> -->
+    <link rel="stylesheet" href="./client.css" />
   </head>
 
   <body>
-    <div id="game-client">
+    <div id="liveView" class="fullscreen-container">
+      <div id="client" style="position: relative">
+        <div id="hud">
+          <h1 class="state1">Both players make a thumbs up 👍 to start!</h1>
+          <div id="players">
+            <div id="player1">F</div>
+            <div id="player2">H</div>
+          </div>
+        </div>
+        <video id="webcam" autoplay playsinline></video>
+        <canvas
+          class="output_canvas"
+          id="output_canvas"
+          style="position: absolute; left: 0px; top: 0px"
+        ></canvas>
+      </div>
+    </div>
+    <!-- partial -->
+    <script type="module" src="./src/Webcam.js"></script>
+  </body>
+</html>
+
+<!-- <!DOCTYPE html>
+<html>
+
+<body> -->
+<!-- <div id="game-client">
       <div class="fullscreen-wrapper">
         <div id="interface">
           <div id="hud">
             <div id="players">
               <div id="player1"></div>
               <div id="player2"></div>
-            </div>
-            <!-- <h1 class="state1">Both players make a thumbs up 👍 to start!</h1>
+            </div> -->
+
+<!-- <h1 class="state1">Both players make a thumbs up 👍 to start!</h1>
             <div class="player state2">
               <h2>Jigglypuff</h2>
               <div class="health-bar"><span>100%</span></div>
@@ -42,37 +65,32 @@
             </div>
             <div class="player state3"></div>
             <div class="player state3"></div> -->
-          </div>
-          <video id="video">Video stream not available.</video>
-        </div>
-        <!-- <button id="start-button">Take photo</button> -->
-      </div>
+
+<!-- </div> as;ldkas;d-->
+
+<!-- <video id="video">Video stream not available.</video> -->
+
+<!-- </div>asdaksjdh -->
+
+<!-- <button id="start-button">Take photo</button> -->
+
+<!-- </div>asdjlkasdjl
     </div>
 
-    <div class="picture"></div>
+    <div class="picture"></div> -->
 
-    <!-- <canvas id="canvas"></canvas>
+<!-- <canvas id="canvas"></canvas>
     <div class="output">
       <img id="photo" alt="The screen capture will appear in this box." />
     </div> -->
 
-    <!-- <div id="liveView" class="videoView">
-      <button id="webcamButton" class="mdc-button mdc-button--raised">
-        <span class="mdc-button__ripple"></span>
-        <span class="mdc-button__label">ENABLE WEBCAM</span>
-      </button>
-      <div style="position: relative;">
-        <video id="webcam" autoplay playsinline></video>
-        <canvas class="output_canvas" id="output_canvas" width="1280" height="720" style="position: absolute; left: 0px; top: 0px;"></canvas>
-        <p id='gesture_output' class="output">
-      </div> -->
-    <script src="src/Helper.js"></script>
+<!-- <script src="src/Helper.js"></script>
     <script src="src/states/BattleOverState.js"></script>
     <script src="src/states/BattleShowState.js"></script>
     <script src="src/states/BattleWaitingState.js"></script>
     <script src="src/states/UserConfirmationState.js"></script>
-    <script src="src/HUDStateMachine.js"></script>
-    <script src="src/PokemonClient.js" defer></script>
-    <!-- <script src="scripts/battle.js"></> -->
-  </body>
-</html>
+    <script src="src/HUDStateMachine.js"></script> -->
+<!-- <script type="module" src="src/PokemonClient.js" defer></script> -->
+<!-- <script src="scripts/battle.js"></> -->
+<!-- </body>
+</html> -->
