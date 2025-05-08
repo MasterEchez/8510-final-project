@@ -3,6 +3,8 @@ class BattleShowState {
     this.player1BattleState = player1BattleState;
     this.player2BattleState = player2BattleState;
     this.omniBattleState = omniBattleState;
+    this.startedTime = false;
+    this.animating = true;
   }
 
   get stateName() {
@@ -10,27 +12,24 @@ class BattleShowState {
   }
 
   updatePlayersReady() {
-
+    return !this.animating;
   }
 
   display() {
     const hud = document.getElementById("hud");
     const players = document.getElementById("players");
 
-    const header = createElementWithText(
-      "h1",
-      "Make gesture for move/switch"
-    );
+    const header = createElementWithText("h1", "Animating");
 
     hud.insertBefore(header, players);
 
-    // get gesture
-    const p1_gesture = createElementWithText("span", "p1_gest");
-    player1.appendChild(p1_gesture);
-
-    // get gesture
-    const p2_gesture = createElementWithText("span", "p2_gest");
-    player2.appendChild(p2_gesture);
+    // TODO: not using time, have animations
+    if (!this.startedTime) {
+      this.startedTime = true;
+      setTimeout(() => {
+        this.animating = false;
+      }, 3000);
+    }
   }
 
   isStateDone() {}
