@@ -168,9 +168,10 @@ async function main() {
   // });
 
   //Which hud to display
-  window.addEventListener("click", (event) => {
-    headsUpDisplay.updateState();
-    // headsUpDisplay.stateTransition();
+  window.addEventListener("click", async (event) => {
+    if (headsUpDisplay.updateState()) {
+      await headsUpDisplay.stateTransition();
+    }
     headsUpDisplay.display();
   });
 

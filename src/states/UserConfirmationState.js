@@ -44,11 +44,14 @@ class UserConfirmationState {
     //hardcoded example for now
     if (!this.player1Ready) {
       this.player1Ready = true;
+      return false;
     } else if (!this.player2Ready) {
       this.player2Ready = true;
       // hardcoded
       // this.endState();
+      return false;
     }
+    return true;
   }
 
   // async
