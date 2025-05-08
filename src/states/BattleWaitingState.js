@@ -9,6 +9,8 @@ class BattleWaitingState {
     this.player2Action;
     this.player1Gesture;
     this.player2Gesture;
+    this.p1Parsed = parsePlayerState(this.player1BattleState);
+    this.p2Parsed = parsePlayerState(this.player2BattleState);
   }
 
   get stateName() {
