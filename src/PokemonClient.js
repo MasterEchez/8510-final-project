@@ -1,211 +1,244 @@
 // import {p1_gesture, p2_gesture, p1_state, p2_state} from "../scripts/battle"
 // import myEmitter from "../scripts/battle";
 
-// let state
+import {
+  GestureRecognizer,
+  FilesetResolver,
+  DrawingUtils,
+} from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3";
 
-async function main() {
-  // The width and height of the captured photo. We will set the
-  // width to the value defined here, but the height will be
-  // calculated based on the aspect ratio of the input stream.
-  const fullscreen = document.getElementsByClassName("fullscreen-wrapper")[0];
-  let width = fullscreen.offsetWidth; // We will scale the photo width to this
-  let height = fullscreen.offsetHeight; // This will be computed based on the input stream
-  // |streaming| indicates whether or not we're currently streaming
-  // video from the camera. Obviously, we start at false.
-  let streaming = false;
+let gestureRecognizer;
+let runningMode = "IMAGE";
 
-  // The various HTML elements we need to configure or control. These
-  // will be set by the startup() function.
-  let video = null;
-  // let canvas = null;
-  // let photo = null;
-  let userInterface = null;
-
-  //state machine
-  const headsUpDisplay = new HUDStateMachine(new UserConfirmationState());
-
-  // //vision
-  // // Create task for image file processing:
-  // const vision = await FilesetResolver.forVisionTasks(
-  //   // path/to/wasm/root
-  //   "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm "
-  // );
-  // const gestureRecognizer = await GestureRecognizer.createFromOptions(vision, {
-  //   baseOptions: {
-  //     modelAssetPath:
-  //       "https://storage.googleapis.com/mediapipe-tasks/gesture_recognizer/gesture_recognizer.task",
-  //   },
-  //   numHands: 2,
-  // });
-
-  function startup() {
-    video = document.getElementById("video");
-    // canvas = document.getElementById("canvas");
-    // photo = document.getElementById("photo");
-    userInterface = document.getElementById("interface");
-
-    navigator.mediaDevices
-      .getUserMedia({ video: true, audio: false })
-      .then((stream) => {
-        video.srcObject = stream;
-        video.play();
-      })
-      .catch((err) => {
-        console.error(`An error occurred: ${err}`);
-      });
-
-    video.addEventListener(
-      "canplay",
-      (ev) => {
-        if (!streaming) {
-          const heightRatio = video.videoHeight / height;
-          const widthRatio = video.videoWidth / width;
-          const maxRatio = Math.max(heightRatio, widthRatio);
-
-          height = video.videoHeight / maxRatio;
-          width = video.videoWidth / maxRatio;
-
-          video.setAttribute("width", width);
-          video.setAttribute("height", height);
-          // canvas = setAttribute("width", width);
-          // canvas = setAttribute("height", height);
-          userInterface.style.width = `${width}px`;
-          userInterface.style.height = `${height}px`;
-          streaming = true;
-        }
-      },
-      false
-    );
-
-    // startButton.addEventListener(
-    //   "click",
-    //   (ev) => {
-    //     takePicture();
-    //     ev.preventDefault();
-    //   },
-    //   false
-    // );
-
-    // clearPhoto();
-
-    // const intervalId = setInterval(() => {
-    //   const pictureData = takePicture();
-    //   const gestureRecognitionResult = gestureRecognizer.recognize(image);
-    //   console.log(gestureRecognitionResult);
-    // }, 1000);
-  }
-
-  // Fill the photo with an indication that none has been captured.
-  // function clearPhoto() {
-  //   const context = canvas.getContext("2d");
-  //   context.fillStyle = "#AAA";
-  //   context.fillRect(0, 0, canvas.width, canvas.height);
-
-  //   const data = canvas.toDataURL("image/png");
-  //   return data;
-  //   // photo.setAttribute("src", data);
-  // }
-
-  // Capture a photo by fetching the current contents of the video
-  // and drawing it into a canvas, then converting that to a PNG
-  // format data URL. By drawing it on an offscreen canvas and then
-  // drawing that to the screen, we can change its size and/or apply
-  // other changes before drawing it.
-  // function takePicture() {
-  //   const context = canvas.getContext("2d");
-  //   if (width && height) {
-  //     canvas.width = width;
-  //     canvas.height = height;
-  //     context.drawImage(video, 0, 0, width, height);
-
-  //     const data = canvas.toDataURL("image/png");
-  //     return data;
-  //     // photo.setAttribute("src", data);
-  //   } else {
-  //     clearPhoto();
-  //   }
-  // }
-
-  function resizeVideo() {
-    const fullscreen = document.getElementsByClassName("fullscreen-wrapper")[0];
-    let screenWidth = fullscreen.offsetWidth; // We will scale the photo width to this
-    let screenHeight = fullscreen.offsetHeight;
-
-    const heightRatio = video.videoHeight / screenHeight;
-    const widthRatio = video.videoWidth / screenWidth;
-    const maxRatio = Math.max(heightRatio, widthRatio);
-
-    height = video.videoHeight / maxRatio;
-    width = video.videoWidth / maxRatio;
-
-    video.setAttribute("width", width);
-    video.setAttribute("height", height);
-    // canvas.setAttribute("width", width);
-    // canvas.setAttribute("height", height);
-    userInterface.style.width = `${width}px`;
-    userInterface.style.height = `${height}px`;
-  }
-
-  // Update client according to current state
-  // function updateClient() {
-  //   if ()
-  // }
-
-  // Set up our event listener to run the startup process
-  // once loading is complete.
-  window.addEventListener("load", startup, false);
-
-  window.onresize = resizeVideo;
-
-  // myEmitter.on("p1_state", (data) => {
-  //   console.log("p1_state received:", data);
-  // });
-  // myEmitter.on("p2_state", (data) => {
-  //   console.log("p2_state received:", data);
-  // });
-  // myEmitter.on("animate", (data) => {
-  //   console.log("animate received:", data);
-  // });
-
-  //Which hud to display
-  window.addEventListener("click", async (event) => {
-    if (headsUpDisplay.updateState()) {
-      await headsUpDisplay.stateTransition();
-    }
-    headsUpDisplay.display();
+const createGestureRecognizer = async () => {
+  const vision = await FilesetResolver.forVisionTasks(
+    "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/wasm"
+  );
+  gestureRecognizer = await GestureRecognizer.createFromOptions(vision, {
+    baseOptions: {
+      modelAssetPath:
+        "https://storage.googleapis.com/mediapipe-models/gesture_recognizer/gesture_recognizer/float16/1/gesture_recognizer.task",
+      delegate: "GPU",
+    },
+    runningMode: runningMode,
+    numHands: 2,
   });
+};
+await createGestureRecognizer();
 
-  // TODO replace with mediapipe gesture feed
-  document.addEventListener("keydown", (event) => {
-    switch (event.key) {
-      case "ArrowUp":
-        // Code to execute when up arrow key is pressed
-        headsUpDisplay.state.player1Gesture = gestures.THUMBS_UP;
-        console.log("Up arrow pressed");
-        break;
-      case "ArrowDown":
-        // Code to execute when down arrow key is pressed
-        headsUpDisplay.state.player1Gesture = gestures.THUMBS_DOWN;
-        console.log("Down arrow pressed");
-        break;
-      case "ArrowRight":
-        // Code to execute when left arrow key is pressed
-        headsUpDisplay.state.player2Gesture = gestures.THUMBS_UP;
-        console.log("Right arrow pressed");
-        break;
-      case "ArrowLeft":
-        // Code to execute when right arrow key is pressed
-        headsUpDisplay.state.player2Gesture = gestures.THUMBS_DOWN;
-        console.log("Left arrow pressed");
-        break;
-    }
-  });
+const video = document.getElementById("webcam");
+const canvasElement = document.getElementById("output_canvas");
+const canvasCtx = canvasElement.getContext("2d");
 
-  headsUpDisplay.display();
+// Check if webcam access is supported.
+function hasGetUserMedia() {
+  return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
 }
 
-// async function update() {}
+// If webcam supported, add event listener to button for when user
+// wants to activate it.
+if (hasGetUserMedia()) {
+  enableCam();
+} else {
+  console.warn("getUserMedia() is not supported by your browser");
+}
 
-// window.requestAnimationFrame;
+// Enable the live webcam view and start detection.
+function enableCam() {
+  if (!gestureRecognizer) {
+    alert("Please wait for gestureRecognizer to load");
+    return;
+  }
 
-void main();
+  // getUsermedia parameters.
+  const constraints = {
+    video: true,
+  };
+
+  // Activate the webcam stream.
+  navigator.mediaDevices.getUserMedia(constraints).then(function (stream) {
+    video.srcObject = stream;
+    video.addEventListener("loadeddata", predictWebcam);
+  });
+}
+
+let lastVideoTime = -1;
+let results = undefined;
+async function predictWebcam() {
+  const webcamElement = document.getElementById("webcam");
+  // Now let's start detecting the stream.
+  if (runningMode === "IMAGE") {
+    runningMode = "VIDEO";
+    await gestureRecognizer.setOptions({ runningMode: "VIDEO" });
+  }
+  let nowInMs = Date.now();
+  if (video.currentTime !== lastVideoTime) {
+    lastVideoTime = video.currentTime;
+    results = gestureRecognizer.recognizeForVideo(video, nowInMs);
+    // console.log(results);
+  }
+
+  canvasCtx.save();
+  canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+  const drawingUtils = new DrawingUtils(canvasCtx);
+
+  // Size video according to window
+  const fullscreen = document.getElementsByClassName("fullscreen-container")[0];
+  const fullHeight = fullscreen.offsetHeight;
+  const fullWidth = fullscreen.offsetWidth;
+
+  const heightRatio = video.videoHeight / fullHeight;
+  const widthRatio = video.videoWidth / fullWidth;
+  const maxRatio = Math.max(heightRatio, widthRatio);
+
+  const adjustedHeight = video.videoHeight / maxRatio;
+  const adjustedWidth = video.videoWidth / maxRatio;
+
+  canvasElement.setAttribute("height", adjustedHeight);
+  webcamElement.setAttribute("height", adjustedHeight);
+  canvasElement.setAttribute("width", adjustedWidth);
+  webcamElement.setAttribute("width", adjustedWidth);
+
+  if (results.landmarks) {
+    for (const landmarks of results.landmarks) {
+      drawingUtils.drawConnectors(
+        landmarks,
+        GestureRecognizer.HAND_CONNECTIONS,
+        {
+          color: "#00FF00",
+          lineWidth: 5,
+        }
+      );
+      drawingUtils.drawLandmarks(landmarks, {
+        color: "#FF0000",
+        lineWidth: 2,
+      });
+    }
+  }
+  canvasCtx.restore();
+  //   if (results.gestures.length > 0) {
+  //     gestureOutput.style.display = "block";
+  //     gestureOutput.style.width = videoWidth;
+  //     const categoryName = results.gestures[0][0].categoryName;
+  //     const categoryScore = parseFloat(
+  //       results.gestures[0][0].score * 100
+  //     ).toFixed(2);
+  //     const handedness = results.handednesses[0][0].displayName;
+  //     gestureOutput.innerText = `GestureRecognizer: ${categoryName}\n Confidence: ${categoryScore} %\n Handedness: ${handedness}`;
+  //   } else {
+  //     gestureOutput.style.display = "none";
+  //   }
+  // Call this function again to keep predicting when the browser is ready.
+  window.requestAnimationFrame(predictWebcam);
+}
+
+function resizeVideo() {
+  const fullscreen = document.getElementsByClassName("fullscreen-container")[0];
+  const fullHeight = fullscreen.offsetHeight;
+  const fullWidth = fullscreen.offsetWidth;
+
+  const heightRatio = video.videoHeight / fullHeight;
+  const widthRatio = video.videoWidth / fullWidth;
+  const maxRatio = Math.max(heightRatio, widthRatio);
+
+  const adjustedHeight = video.videoHeight / maxRatio;
+  const adjustedWidth = video.videoWidth / maxRatio;
+
+  canvasElement.setAttribute("height", adjustedHeight);
+  webcamElement.setAttribute("height", adjustedHeight);
+  canvasElement.setAttribute("width", adjustedWidth);
+  webcamElement.setAttribute("width", adjustedWidth);
+}
+
+window.onresize = resizeVideo;
+
+// State machine
+const headsUpDisplay = new HUDStateMachine(new UserConfirmationState());
+
+window.addEventListener("click", async (event) => {
+  if (headsUpDisplay.updateState()) {
+    await headsUpDisplay.stateTransition();
+  }
+  headsUpDisplay.display();
+});
+
+// TODO replace with mediapipe gesture feed
+document.addEventListener("keydown", (event) => {
+  switch (event.key) {
+    case "ArrowUp":
+      // Code to execute when up arrow key is pressed
+      headsUpDisplay.state.player1Gesture = gestures.THUMBS_UP;
+      console.log("Up arrow pressed");
+      break;
+    case "ArrowDown":
+      // Code to execute when down arrow key is pressed
+      headsUpDisplay.state.player1Gesture = gestures.THUMBS_DOWN;
+      console.log("Down arrow pressed");
+      break;
+    case "ArrowRight":
+      // Code to execute when left arrow key is pressed
+      headsUpDisplay.state.player2Gesture = gestures.THUMBS_UP;
+      console.log("Right arrow pressed");
+      break;
+    case "ArrowLeft":
+      // Code to execute when right arrow key is pressed
+      headsUpDisplay.state.player2Gesture = gestures.THUMBS_DOWN;
+      console.log("Left arrow pressed");
+      break;
+  }
+});
+
+headsUpDisplay.display();
+
+// async function main() {
+//   //state machine
+//   const headsUpDisplay = new HUDStateMachine(new UserConfirmationState());
+
+//   // myEmitter.on("p1_state", (data) => {
+//   //   console.log("p1_state received:", data);
+//   // });
+//   // myEmitter.on("p2_state", (data) => {
+//   //   console.log("p2_state received:", data);
+//   // });
+//   // myEmitter.on("animate", (data) => {
+//   //   console.log("animate received:", data);
+//   // });
+
+//   //Which hud to display
+//   window.addEventListener("click", async (event) => {
+//     if (headsUpDisplay.updateState()) {
+//       await headsUpDisplay.stateTransition();
+//     }
+//     headsUpDisplay.display();
+//   });
+
+//   // TODO replace with mediapipe gesture feed
+//   document.addEventListener("keydown", (event) => {
+//     switch (event.key) {
+//       case "ArrowUp":
+//         // Code to execute when up arrow key is pressed
+//         headsUpDisplay.state.player1Gesture = gestures.THUMBS_UP;
+//         console.log("Up arrow pressed");
+//         break;
+//       case "ArrowDown":
+//         // Code to execute when down arrow key is pressed
+//         headsUpDisplay.state.player1Gesture = gestures.THUMBS_DOWN;
+//         console.log("Down arrow pressed");
+//         break;
+//       case "ArrowRight":
+//         // Code to execute when left arrow key is pressed
+//         headsUpDisplay.state.player2Gesture = gestures.THUMBS_UP;
+//         console.log("Right arrow pressed");
+//         break;
+//       case "ArrowLeft":
+//         // Code to execute when right arrow key is pressed
+//         headsUpDisplay.state.player2Gesture = gestures.THUMBS_DOWN;
+//         console.log("Left arrow pressed");
+//         break;
+//     }
+//   });
+
+//   headsUpDisplay.display();
+// }
+
+// void main();
