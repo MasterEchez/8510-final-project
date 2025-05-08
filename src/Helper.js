@@ -6,13 +6,13 @@ const battleStates = {
 };
 
 const gestures = {
-  THUMBS_UP: 0,
-  THUMBS_DOWN: 1,
-  VICTORY: 2,
-  POINTING_UP: 3,
-  CLOSED_FIST: 4,
-  OPEN_PALM: 5,
-  LOVE: 6,
+  THUMBS_UP: "thumbs_up",
+  THUMBS_DOWN: "thumbs_down",
+  VICTORY: "victory",
+  POINTING_UP: "point_up",
+  CLOSED_FIST: "closed_fist",
+  OPEN_PALM: "open_palm",
+  LOVE: "love",
 };
 
 function removeAllChildren(element) {

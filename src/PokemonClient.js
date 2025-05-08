@@ -175,6 +175,33 @@ async function main() {
     headsUpDisplay.display();
   });
 
+
+  // TODO replace with mediapipe gesture feed
+  document.addEventListener('keydown', (event) => {
+    switch (event.key) {
+      case 'ArrowUp':
+        // Code to execute when up arrow key is pressed
+        headsUpDisplay.state.player1Gesture = gestures.THUMBS_UP;
+        console.log('Up arrow pressed');
+        break;
+      case 'ArrowDown':
+        // Code to execute when down arrow key is pressed
+        headsUpDisplay.state.player1Gesture = gestures.THUMBS_DOWN;
+        console.log('Down arrow pressed');
+        break;
+      case 'ArrowRight':
+        // Code to execute when left arrow key is pressed
+        headsUpDisplay.state.player2Gesture = gestures.THUMBS_UP;
+        console.log('Right arrow pressed');
+        break;
+      case 'ArrowLeft':
+        // Code to execute when right arrow key is pressed
+        headsUpDisplay.state.player2Gesture = gestures.THUMBS_DOWN;
+        console.log('Left arrow pressed');
+        break;
+    }
+  });
+
   headsUpDisplay.display();
 }
 

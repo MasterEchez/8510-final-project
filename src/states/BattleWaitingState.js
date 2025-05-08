@@ -7,6 +7,8 @@ class BattleWaitingState {
     this.player2Done = false;
     this.player1Action;
     this.player2Action;
+    this.player1Gesture;
+    this.player2Gesture;
   }
 
   get stateName() {
@@ -26,15 +28,18 @@ class BattleWaitingState {
     hud.insertBefore(header, players);
 
     // get gesture
-    const p1_gesture = createElementWithText("span", "p1_gest");
+    const [p1, p2] = this.checkPlayerGestures();
+    const p1_gesture = createElementWithText("span", p1);
     player1.appendChild(p1_gesture);
 
     // get gesture
-    const p2_gesture = createElementWithText("span", "p2_gest");
+    const p2_gesture = createElementWithText("span", p2);
     player2.appendChild(p2_gesture);
   }
 
-  checkPlayerGestures() {}
+  checkPlayerGestures() {
+    return [this.player1Gesture, this.player2Gesture];
+  }
 
   updatePlayerActions() {}
 
