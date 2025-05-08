@@ -50,13 +50,12 @@ class UserConfirmationState {
     if (!this.player2Ready) {
       this.player2Ready = this.player2Gesture === gestures.THUMBS_UP;
     }
-
-    // console.log(this.player1Gesture);
   }
 
   // update players ready
-  updateState(player1Gesture) {
+  updateState(player1Gesture, player2Gesture) {
     this.player1Gesture = player1Gesture;
+    this.player2Gesture = player2Gesture;
     this.updatePlayerReadiness();
     // return this.player1Ready && this.player2Ready;
   }

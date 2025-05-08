@@ -70,13 +70,13 @@ async function predictWebcam() {
   // Now let's start detecting the stream.
   if (runningMode === "IMAGE") {
     runningMode = "VIDEO";
-    await gestureRecognizer.setOptions({ runningMode: "VIDEO" });
+    await gestureRecognizer.setOptions({ runningMode: "VIDEO", numHands: 4 });
   }
   let nowInMs = Date.now();
   if (video.currentTime !== lastVideoTime) {
     lastVideoTime = video.currentTime;
     results = gestureRecognizer.recognizeForVideo(video, nowInMs);
-    // console.log(results.gestures);
+    // console.log(results.landmarks);
   }
 
   // Canvas stuff
@@ -122,20 +122,57 @@ async function predictWebcam() {
   // Tell state machine to update
   // headsUpDisplay.updateState();
 
-  if (results.gestures.length > 0) {
+  if (results.gestures.length === 1) {
+    const playerGesture = results.gestures[0][0].categoryName;
+    let player1Gesture = "";
+    let player2Gesture = "";
+
+    const wristLocation = results.landmarks[0][0].x;
+    if (wristLocation > 0.5) {
+      player1Gesture = playerGesture;
+    } else {
+      player2Gesture = playerGesture;
+    }
+
     // gestureOutput.style.display = "block";
     // gestureOutput.style.width = videoWidth;
     // const categoryName = results.gestures[0][0].categoryName;
-    const player1Gesture = results.gestures[0][0].categoryName;
-    headsUpDisplay.updateState(player1Gesture);
+    // const player1Gesture = results.gestures[0][0].categoryName;
+    // const player2Gesture = results.gestures[1][0].categoryName;
+    headsUpDisplay.updateState(player1Gesture, player2Gesture);
     headsUpDisplay.display();
-    console.log(player1Gesture);
     // const categoryScore = parseFloat(
     //   results.gestures[0][0].score * 100
     // ).toFixed(2);
     // const handedness = results.handednesses[0][0].displayName;
     // gestureOutput.innerText = `GestureRecognizer: ${categoryName}\n Confidence: ${categoryScore} %\n Handedness: ${handedness}`;
-  } else {
+  } else if (results.gestures.length === 2) {
+    const firstGesture = results.gestures[0][0].categoryName;
+    const secondGesture = results.gestures[1][0].categoryName;
+    let player1Gesture = "";
+    let player2Gesture = "";
+
+    const firstWristLocation = results.landmarks[0][0].x;
+    const secondWristLocation = results.landmarks[1][0].x;
+
+    const isFirstWristLeft = firstWristLocation > 0.5;
+    const isSecondWristLeft = secondWristLocation > 0.5;
+
+    if (isFirstWristLeft && isSecondWristLeft) {
+      player1Gesture = firstGesture;
+    } else if (!isFirstWristLeft && !isSecondWristLeft) {
+      player2Gesture = firstGesture;
+    } else if (isFirstWristLeft && !isSecondWristLeft) {
+      player1Gesture = firstGesture;
+      player2Gesture = secondGesture;
+    } else {
+      player1Gesture = secondGesture;
+      player2Gesture = firstGesture;
+    }
+
+    headsUpDisplay.updateState(player1Gesture, player2Gesture);
+    headsUpDisplay.display();
+
     // gestureOutput.style.display = "none";
   }
   // Call this function again to keep predicting when the browser is ready.

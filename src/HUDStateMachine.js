@@ -9,9 +9,9 @@ class HUDStateMachine {
     this.state.display();
   }
 
-  updateState(player1Gesture) {
+  updateState(player1Gesture, player2Gesture) {
     //hard coded for now
-    return this.state.updateState(player1Gesture);
+    return this.state.updateState(player1Gesture, player2Gesture);
   }
 
   async stateTransition() {
