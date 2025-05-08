@@ -32,9 +32,48 @@ function createElementWithText(tag, text) {
 function parsePlayerState(playerState) {
   const reqObject = playerState.request;
   if (reqObject.active) {
-
-  } else if (reqObject.wait){
-
+    return {
+      type: "active",
+      moves: reqObject.active[0].moves.map((move, i) => {
+        return {
+          move: move.move,
+          slot: i,
+          disabled: move.disabled,
+        };
+      }),
+      party: reqObject.side.pokemon.map((member, i) => {
+        return {
+          name: member.details.split(",")[0],
+          slot: i,
+          condition: member.condition,
+          active: member.active,
+        };
+      }),
+    };
+  } else if (reqObject.wait) {
+    return {
+      type: "wait",
+      party: reqObject.side.pokemon.map((member, i) => {
+        return {
+          name: member.details.split(",")[0],
+          slot: i,
+          condition: member.condition,
+          active: member.active,
+        };
+      }),
+    };
+  } else if (reqObject.forceSwitch !== undefined) {
+    return {
+      type: "switch",
+      party: reqObject.side.pokemon.map((member, i) => {
+        return {
+          name: member.details.split(",")[0],
+          slot: i,
+          condition: member.condition,
+          active: member.active,
+        };
+      }),
+    };
   }
 }
 
@@ -58,7 +97,7 @@ function parseOmniState(omniState) {
   const animList = [];
   let splitCountdown = 1;
   let handlingSplit = false;
-  omniState.map( (el) => {
+  omniState.map((el) => {
     const splitUp = el.split("|");
     // console.log(splitUp);
     switch (splitUp[1]) {
@@ -105,7 +144,7 @@ function parseOmniState(omniState) {
         }
         break;
     }
-    
+
     // if (el === "|split|p1" || el === "|split|p2") {
     //     splitCountdown = 1;
     // } else if (el.includes("switch")) {

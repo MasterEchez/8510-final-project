@@ -26,6 +26,8 @@ class BattleShowState {
 
     hud.insertBefore(header, players);
     console.log(this.animationList);
+    console.log(this.p1Parsed);
+    console.log(this.p2Parsed);
 
     // TODO: not using time, have animations
     if (!this.startedTime) {
