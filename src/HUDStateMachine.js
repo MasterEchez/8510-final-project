@@ -11,25 +11,52 @@ class HUDStateMachine {
 
   updateState() {
     //hard coded for now
-    this.state.updatePlayersReady();
+    return this.state.updatePlayersReady();
   }
 
-  // stateTransition() {
-  //   switch (this.state.stateName) {
-  //     case battleStates.CONFIRM_USERS:
-  //       if (this.state.checkPlayersReady()) {
-  //         await this.endState();
-  //         this.state = new BattleWaitingState();
-  //       }
-  //       break;
-  //     case battleStates.BATTLE_WAITING:
-  //       break;
-  //     case battleStates.BATTLE_SHOW:
-  //       break;
-  //     case battleStates.BATTLE_OVER:
-  //       break;
-  //   }
-  // }
+  async stateTransition() {
+    switch (this.state.stateName) {
+      case battleStates.CONFIRM_USERS:
+        // if (this.state.checkPlayersReady()) {
+        // await this.endState();
+        await fetch("http://localhost:3000/start", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({}),
+        })
+          .then((response) => {
+            return response.json();
+          })
+          .then((responseData) => {
+            console.log(responseData);
+            this.state = new BattleShowState(
+              responseData.p1,
+              responseData.p2,
+              responseData.omni
+            );
+          });
+        // }
+        break;
+      case battleStates.BATTLE_WAITING:
+        break;
+      case battleStates.BATTLE_SHOW:
+        const [player1BattleState, player2BattleState, omniBattleState] = [
+          this.state.player1BattleState,
+          this.state.player2BattleState,
+          this.state.omniBattleState,
+        ];
+        this.state = new BattleWaitingState(
+          player1BattleState,
+          player2BattleState,
+          omniBattleState
+        );
+        break;
+      case battleStates.BATTLE_OVER:
+        break;
+    }
+  }
 
   // Private
   resetDisplay() {
