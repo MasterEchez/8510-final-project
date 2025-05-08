@@ -3,8 +3,8 @@ class UserConfirmationState {
     this.player1Ready = false;
     this.player2Ready = false;
     // this.isStateOver;
-    this.player1Gesture;
-    this.player2Gesture;
+    this.player1Gesture = "";
+    this.player2Gesture = "";
   }
 
   // get function
@@ -41,26 +41,24 @@ class UserConfirmationState {
     return this.player1Ready && this.player2Ready;
   }
 
-  checkPlayerGestures() {
+  updatePlayerReadiness() {
     // poll for gesture
-    this.player1Ready = this.player1Gesture === gestures.THUMBS_UP;
-    this.player2Ready = this.player2Gesture === gestures.THUMBS_UP;
+    if (!this.player1Ready) {
+      this.player1Ready = this.player1Gesture === gestures.THUMBS_UP;
+    }
+
+    if (!this.player2Ready) {
+      this.player2Ready = this.player2Gesture === gestures.THUMBS_UP;
+    }
+
+    // console.log(this.player1Gesture);
   }
 
   // update players ready
-  updatePlayersReady() {
-    //hardcoded example for now
-    // if (!this.player1Ready) {
-    //   this.player1Ready = true;
-    //   return false;
-    // } else if (!this.player2Ready) {
-    //   this.player2Ready = true;
-    //   // hardcoded
-    //   // this.endState();
-    //   return false;
-    // }
-    this.checkPlayerGestures();
-    return this.player1Ready && this.player2Ready;
+  updateState(player1Gesture) {
+    this.player1Gesture = player1Gesture;
+    this.updatePlayerReadiness();
+    // return this.player1Ready && this.player2Ready;
   }
 
   // async

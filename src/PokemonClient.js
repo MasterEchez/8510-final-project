@@ -64,6 +64,7 @@ function enableCam() {
 
 let lastVideoTime = -1;
 let results = undefined;
+
 async function predictWebcam() {
   const webcamElement = document.getElementById("webcam");
   // Now let's start detecting the stream.
@@ -75,9 +76,10 @@ async function predictWebcam() {
   if (video.currentTime !== lastVideoTime) {
     lastVideoTime = video.currentTime;
     results = gestureRecognizer.recognizeForVideo(video, nowInMs);
-    // console.log(results);
+    // console.log(results.gestures);
   }
 
+  // Canvas stuff
   canvasCtx.save();
   canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
   const drawingUtils = new DrawingUtils(canvasCtx);
@@ -116,18 +118,26 @@ async function predictWebcam() {
     }
   }
   canvasCtx.restore();
-  //   if (results.gestures.length > 0) {
-  //     gestureOutput.style.display = "block";
-  //     gestureOutput.style.width = videoWidth;
-  //     const categoryName = results.gestures[0][0].categoryName;
-  //     const categoryScore = parseFloat(
-  //       results.gestures[0][0].score * 100
-  //     ).toFixed(2);
-  //     const handedness = results.handednesses[0][0].displayName;
-  //     gestureOutput.innerText = `GestureRecognizer: ${categoryName}\n Confidence: ${categoryScore} %\n Handedness: ${handedness}`;
-  //   } else {
-  //     gestureOutput.style.display = "none";
-  //   }
+
+  // Tell state machine to update
+  // headsUpDisplay.updateState();
+
+  if (results.gestures.length > 0) {
+    // gestureOutput.style.display = "block";
+    // gestureOutput.style.width = videoWidth;
+    // const categoryName = results.gestures[0][0].categoryName;
+    const player1Gesture = results.gestures[0][0].categoryName;
+    headsUpDisplay.updateState(player1Gesture);
+    headsUpDisplay.display();
+    console.log(player1Gesture);
+    // const categoryScore = parseFloat(
+    //   results.gestures[0][0].score * 100
+    // ).toFixed(2);
+    // const handedness = results.handednesses[0][0].displayName;
+    // gestureOutput.innerText = `GestureRecognizer: ${categoryName}\n Confidence: ${categoryScore} %\n Handedness: ${handedness}`;
+  } else {
+    // gestureOutput.style.display = "none";
+  }
   // Call this function again to keep predicting when the browser is ready.
   window.requestAnimationFrame(predictWebcam);
 }
@@ -151,6 +161,9 @@ function resizeVideo() {
 }
 
 window.onresize = resizeVideo;
+
+// Listen for gesture recognition
+// document.addEventListener;
 
 // State machine
 const headsUpDisplay = new HUDStateMachine(new UserConfirmationState());

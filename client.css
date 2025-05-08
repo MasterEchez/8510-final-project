@@ -56,6 +56,10 @@ video {
   align-items: center;
 }
 
+h1 {
+  flex-grow: 0;
+}
+
 #players {
   flex-grow: 1;
   width: 100%;
@@ -72,10 +76,6 @@ video {
 }
 
 /*
-
-h1 {
-  flex-grow: 0;
-}
 
 #video {
   z-index: -100;
