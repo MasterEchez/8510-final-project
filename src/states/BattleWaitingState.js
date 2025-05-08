@@ -22,6 +22,8 @@ class BattleWaitingState {
   }
 
   display() {
+    console.log(this.p1Parsed);
+    console.log(this.p2Parsed);
     const hud = document.getElementById("hud");
     const players = document.getElementById("players");
 

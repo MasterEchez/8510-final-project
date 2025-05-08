@@ -13,7 +13,41 @@ const gestures = {
   CLOSED_FIST: "closed_fist",
   OPEN_PALM: "open_palm",
   LOVE: "love",
+  GESTURE_8: "gesture_8",
+  GESTURE_9: "gesture_9"
 };
+
+function gestureToOption(gesture) {
+  switch (gesture) {
+    case gestures.THUMBS_UP:
+      return "move 1";
+      break;
+    case gestures.THUMBS_DOWN:
+      return "switch 2";
+      break;
+    case gestures.VICTORY:
+      return "move 2";
+      break;
+    case gestures.POINTING_UP:
+      return "move 3";
+      break;
+    case gestures.CLOSED_FIST:
+      return "switch 3";
+      break;
+    case gestures.OPEN_PALM:
+      return "switch 4";
+      break;
+    case gestures.LOVE:
+      return "switch 5";
+      break;
+    case gestures.GESTURE_8:
+      return "switch 6";
+      break;
+    case gestures.GESTURE_9:
+      return "move 4";
+      break;
+  }
+}
 
 function removeAllChildren(element) {
   while (element.firstChild) {
