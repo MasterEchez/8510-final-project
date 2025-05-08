@@ -1,10 +1,5 @@
 const express = require("express");
-const {
-  Sim,
-  SwitchRequest,
-  MoveRequest,
-  WaitRequest,
-} = require("pokemon-showdown");
+const Sim = require("pokemon-showdown");
 const {
   battleStates,
   gestures,
@@ -57,12 +52,15 @@ let getState = async () => {
     const msgParts = output.split("\n");
     switch (msgParts[0]) {
       case "sideupdate":
+        const [_, type, objStr] = msgParts[2].split("|");
         if (msgParts[1] === "p1") {
-          p1 = msgParts[2];
+          p1 = {};
+          p1[type] =  JSON.parse(objStr);
           p1_updated = true;
           // console.log(p1);
         } else {
-          p2 = msgParts[2];
+          p2 = {};
+          p2[type] =  JSON.parse(objStr);
           p2_updated = true;
           // console.log(p2);
         }
