@@ -5,6 +5,9 @@ class BattleShowState {
     this.omniBattleState = omniBattleState;
     this.startedTime = false;
     this.animating = true;
+    this.p1Parsed = parsePlayerState(this.player1BattleState);
+    this.p2Parsed = parsePlayerState(this.player2BattleState);
+    this.animationList = parseOmniState(this.omniBattleState);
   }
 
   get stateName() {
@@ -22,6 +25,9 @@ class BattleShowState {
     const header = createElementWithText("h1", "Animating");
 
     hud.insertBefore(header, players);
+    console.log(this.animationList);
+    console.log(this.p1Parsed);
+    console.log(this.p2Parsed);
 
     // TODO: not using time, have animations
     if (!this.startedTime) {

@@ -9,6 +9,8 @@ class BattleWaitingState {
     this.player2Action;
     this.player1Gesture;
     this.player2Gesture;
+    this.p1Parsed = parsePlayerState(this.player1BattleState);
+    this.p2Parsed = parsePlayerState(this.player2BattleState);
   }
 
   get stateName() {
@@ -20,6 +22,8 @@ class BattleWaitingState {
   }
 
   display() {
+    console.log(this.p1Parsed);
+    console.log(this.p2Parsed);
     const hud = document.getElementById("hud");
     const players = document.getElementById("players");
 
