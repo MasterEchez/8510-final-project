@@ -5,6 +5,7 @@ class UserConfirmationState {
     // this.isStateOver;
     this.player1Gestures = [];
     this.player2Gestures = [];
+    this.timer = 0;
   }
 
   // get function
@@ -59,7 +60,13 @@ class UserConfirmationState {
     this.player1Gestures = player1Gestures.slice();
     this.player2Gestures = player2Gestures.slice();
     this.updatePlayerReadiness();
-    // return this.player1Ready && this.player2Ready;
+    if (this.checkPlayersReady() && this.timer !== 0) {
+      this.timer = Date.now();
+    }
+  }
+
+  isOver() {
+    return this.checkPlayersReady() && Date.now() - this.timer > 3000;
   }
 
   // async

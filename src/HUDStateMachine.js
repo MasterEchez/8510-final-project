@@ -22,24 +22,28 @@ class HUDStateMachine {
       case battleStates.CONFIRM_USERS:
         // if (this.state.checkPlayersReady()) {
         // await this.endState();
-        await fetch("http://localhost:3000/start", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({}),
-        })
-          .then((response) => {
-            return response.json();
+        // console.log("HUH");
+        if (this.state.isOver()) {
+          console.log("YES!");
+          await fetch("http://localhost:3000/start", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({}),
           })
-          .then((responseData) => {
-            console.log(responseData);
-            this.state = new BattleShowState(
-              responseData.p1,
-              responseData.p2,
-              responseData.omni
-            );
-          });
+            .then((response) => {
+              return response.json();
+            })
+            .then((responseData) => {
+              console.log(responseData);
+              this.state = new BattleShowState(
+                responseData.p1,
+                responseData.p2,
+                responseData.omni
+              );
+            });
+        }
         // }
         break;
       case battleStates.BATTLE_WAITING:
