@@ -122,58 +122,27 @@ async function predictWebcam() {
   // Tell state machine to update
   // headsUpDisplay.updateState();
 
-  if (results.gestures.length === 1) {
-    const playerGesture = results.gestures[0][0].categoryName;
-    let player1Gesture = "";
-    let player2Gesture = "";
+  if (results.gestures.length > 0) {
+    const player1Gestures = [];
+    const player2Gestures = [];
 
-    const wristLocation = results.landmarks[0][0].x;
-    if (wristLocation > 0.5) {
-      player1Gesture = playerGesture;
-    } else {
-      player2Gesture = playerGesture;
+    for (let i = 0; i < results.gestures.length; i++) {
+      const gestureName = results.gestures[i][0].categoryName;
+      const wristLocation = results.landmarks[i][0].x;
+      const isWristLeft = wristLocation > 0.5;
+
+      if (isWristLeft && player1Gestures.length < 2) {
+        player1Gestures.push(gestureName);
+      } else if (!isWristLeft && player2Gestures.length < 2) {
+        player2Gestures.push(gestureName);
+      }
     }
 
-    // gestureOutput.style.display = "block";
-    // gestureOutput.style.width = videoWidth;
-    // const categoryName = results.gestures[0][0].categoryName;
-    // const player1Gesture = results.gestures[0][0].categoryName;
-    // const player2Gesture = results.gestures[1][0].categoryName;
-    headsUpDisplay.updateState(player1Gesture, player2Gesture);
+    headsUpDisplay.updateState(
+      player1Gestures.slice(),
+      player2Gestures.slice()
+    );
     headsUpDisplay.display();
-    // const categoryScore = parseFloat(
-    //   results.gestures[0][0].score * 100
-    // ).toFixed(2);
-    // const handedness = results.handednesses[0][0].displayName;
-    // gestureOutput.innerText = `GestureRecognizer: ${categoryName}\n Confidence: ${categoryScore} %\n Handedness: ${handedness}`;
-  } else if (results.gestures.length === 2) {
-    const firstGesture = results.gestures[0][0].categoryName;
-    const secondGesture = results.gestures[1][0].categoryName;
-    let player1Gesture = "";
-    let player2Gesture = "";
-
-    const firstWristLocation = results.landmarks[0][0].x;
-    const secondWristLocation = results.landmarks[1][0].x;
-
-    const isFirstWristLeft = firstWristLocation > 0.5;
-    const isSecondWristLeft = secondWristLocation > 0.5;
-
-    if (isFirstWristLeft && isSecondWristLeft) {
-      player1Gesture = firstGesture;
-    } else if (!isFirstWristLeft && !isSecondWristLeft) {
-      player2Gesture = firstGesture;
-    } else if (isFirstWristLeft && !isSecondWristLeft) {
-      player1Gesture = firstGesture;
-      player2Gesture = secondGesture;
-    } else {
-      player1Gesture = secondGesture;
-      player2Gesture = firstGesture;
-    }
-
-    headsUpDisplay.updateState(player1Gesture, player2Gesture);
-    headsUpDisplay.display();
-
-    // gestureOutput.style.display = "none";
   }
   // Call this function again to keep predicting when the browser is ready.
   window.requestAnimationFrame(predictWebcam);
