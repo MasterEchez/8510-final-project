@@ -46,6 +46,8 @@ function gestureToOption(gesture) {
     case gestures.GESTURE_9:
       return "move 4";
       break;
+    default:
+      return "none";
   }
 }
 
