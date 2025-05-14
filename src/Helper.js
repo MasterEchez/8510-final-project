@@ -74,6 +74,31 @@ function gestureToOption(gesture) {
   }
 }
 
+function optionToGesture(option) {
+  switch (option) {
+    case "move 1":
+      return gestures.THUMBS_UP;
+    case "switch 2":
+      return gestures.THUMBS_DOWN;
+    case "move 2":
+      return gestures.VICTORY;
+    case "move 3":
+      return gestures.POINTING_UP;
+    case "switch 3":
+      return gestures.CLOSED_FIST;
+    case "switch 4":
+      return gestures.OPEN_PALM;
+    case "switch 5":
+      return gestures.LOVE;
+    case "switch 6":
+      return gestures.GESTURE_8;
+    case "move 4":
+      return gestures.GESTURE_9;
+    default:
+      return null;
+  }
+}
+
 function removeAllChildren(element) {
   while (element.firstChild) {
     element.removeChild(element.firstChild);
@@ -96,14 +121,14 @@ function parsePlayerState(playerState) {
       moves: reqObject.active[0].moves.map((move, i) => {
         return {
           move: move.move,
-          slot: i,
+          slot: i + 1,
           disabled: move.disabled,
         };
       }),
       party: reqObject.side.pokemon.map((member, i) => {
         return {
           name: member.details.split(",")[0],
-          slot: i,
+          slot: i + 1,
           condition: member.condition,
           active: member.active,
         };
@@ -115,7 +140,7 @@ function parsePlayerState(playerState) {
       party: reqObject.side.pokemon.map((member, i) => {
         return {
           name: member.details.split(",")[0],
-          slot: i,
+          slot: i + 1,
           condition: member.condition,
           active: member.active,
         };
@@ -127,7 +152,7 @@ function parsePlayerState(playerState) {
       party: reqObject.side.pokemon.map((member, i) => {
         return {
           name: member.details.split(",")[0],
-          slot: i,
+          slot: i + 1,
           condition: member.condition,
           active: member.active,
         };

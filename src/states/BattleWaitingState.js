@@ -176,27 +176,31 @@ class BattleWaitingState {
     activePokemonHPElement.classList.add("pokemon-hp");
     const activePokemonMovesContainer = document.createElement("div");
     activePokemonMovesContainer.setAttribute("id", "moves");
-    for (let i = 0; i < activePokemonMoves.length; i++) {
-      const move = activePokemonMoves[i];
-      const gesture = moveGestures[i];
-      const emoji = getGestureEmoji(gesture);
+    
+    if (playerBattleState.type === "active") {
+      for (let i = 0; i < activePokemonMoves.length; i++) {
+        const move = activePokemonMoves[i];
+        const moveSlot = move.slot;
+        const gesture = optionToGesture(`move ${moveSlot}`);
+        const emoji = getGestureEmoji(gesture);
 
-      // elements
-      const moveElement = document.createElement("div");
-      moveElement.classList.add("move");
-      if (move.disabled) {
-        moveElement.classList.add("disabled");
+        // elements
+        const moveElement = document.createElement("div");
+        moveElement.classList.add("move");
+        if (move.disabled) {
+          moveElement.classList.add("disabled");
+        }
+
+        const moveNameElement = createElementWithText("p", move.move);
+        moveNameElement.classList.add("move-name");
+
+        const moveEmojiElement = createElementWithText("p", emoji);
+        moveEmojiElement.classList.add("move-emoji");
+
+        moveElement.appendChild(moveNameElement);
+        moveElement.appendChild(moveEmojiElement);
+        activePokemonMovesContainer.appendChild(moveElement);
       }
-
-      const moveNameElement = createElementWithText("p", move.move);
-      moveNameElement.classList.add("move-name");
-
-      const moveEmojiElement = createElementWithText("p", emoji);
-      moveEmojiElement.classList.add("move-emoji");
-
-      moveElement.appendChild(moveNameElement);
-      moveElement.appendChild(moveEmojiElement);
-      activePokemonMovesContainer.appendChild(moveElement);
     }
 
     const activePokemonSpriteElement = document.createElement("img");
@@ -210,9 +214,10 @@ class BattleWaitingState {
     const possiblePokemonSwitchesContainer = document.createElement("div");
     for (let i = 0; i < restingPokemon.length; i++) {
       const pokemon = restingPokemon[i];
-      const pokemonSprite = getPokemonSpriteURL(pokemon.name); //needs to be awaited
-      const gesture = switchingGestures[i];
+      const restingSlot = pokemon.slot;
+      const gesture = optionToGesture(`switch ${restingSlot}`);
       const emoji = getGestureEmoji(gesture);
+      const pokemonSprite = getPokemonSpriteURL(pokemon.name); //needs to be awaited
 
       // elements
       const switchElement = document.createElement("div");
