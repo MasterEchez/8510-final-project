@@ -217,16 +217,86 @@ function parseOmniState(omniState) {
   return animList;
 }
 
+function showdownToPokeapi(name) {
+  const cosmeticForms = [
+    'florges', 'vivillon', 'furfrou', 'alcremie', 'minior', 'tatsugiri', 'squawkabilly',
+    'flabebe', 'floette', 'dudunsparce', 'deerling', 'sawsbuck', 'pumpkaboo', 'gourgeist'
+  ];
+
+  const genderedForms = {
+    'meowstic-f': 'meowstic-female',
+    'meowstic-m': 'meowstic-male',
+    'indeedee-f': 'indeedee-female',
+    'indeedee-m': 'indeedee-male',
+    'basculegion-f': 'basculegion-female',
+    'basculegion-m': 'basculegion-male'
+  };
+
+  const trueForms = {
+    'lycanroc-dusk': 'lycanroc-dusk',
+    'lycanroc-midnight': 'lycanroc-midnight',
+    'lycanroc': 'lycanroc',
+    'zygarde-10%': 'zygarde-10',
+    'zygarde-complete': 'zygarde-complete',
+    'urshifu-rapid-strike': 'urshifu-rapid-strike',
+    'urshifu': 'urshifu-single-strike',
+    'toxtricity-low-key': 'toxtricity-low-key',
+    'toxtricity': 'toxtricity-amped',
+    'oricorio-pom-pom': 'oricorio-pom-pom',
+    'oricorio-pau': 'oricorio-pau',
+    'oricorio-sensu': 'oricorio-sensu',
+    'oricorio': 'oricorio-baile',
+    'basculin-blue-striped': 'basculin-blue-striped',
+    'basculin-white-striped': 'basculin-white-striped',
+    'calyrex-ice': 'calyrex-ice',
+    'calyrex-shadow': 'calyrex-shadow',
+    'giratina-origin': 'giratina-origin',
+    'giratina': 'giratina-altered',
+    'shaymin-sky': 'shaymin-sky',
+    'shaymin': 'shaymin-land',
+    'rotom-heat': 'rotom-heat',
+    'rotom-wash': 'rotom-wash',
+    'rotom-frost': 'rotom-frost',
+    'rotom-fan': 'rotom-fan',
+    'rotom-mow': 'rotom-mow',
+    'rotom': 'rotom'
+  };
+
+  name = name
+    .toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')  // remove accents
+    .replace(/[^a-z0-9]+/g, '-') // replace spaces, apostrophes, colons etc. with hyphen
+    .replace(/-$|^-/, '')        // remove leading/trailing hyphens
+    .replace('♀', 'f')
+    .replace('♂', 'm');
+
+  // Handle special case mappings
+  if (genderedForms[name]) return genderedForms[name];
+  if (trueForms[name]) return trueForms[name];
+
+  // Strip cosmetic suffixes from known base species
+  for (let cosmetic of cosmeticForms) {
+    if (name.startsWith(cosmetic + '-')) {
+      return cosmetic;
+    }
+  }
+
+  return name;
+}
+
+
 async function getPokemonSpriteURL(pokemonName, backupImage = false) {
-  const lowercaseName = pokemonName.toLowerCase();
-  const formattedName = lowercaseName.replace(" ", "-");
+  // const lowercaseName = pokemonName.toLowerCase();
+  // const formattedName = lowercaseName.replace(" ", "-");
+  const showdownName = showdownToPokeapi(pokemonName);
   const pokemonInfoRequest = await fetch(
-    "https://pokeapi.co/api/v2/pokemon/" + formattedName
-  ).catch(() => {
-    return fetch(
-      "https://pokeapi.co/api/v2/pokemon/" + formattedName.split("-")[0]
-    );
-  });
+    "https://pokeapi.co/api/v2/pokemon/" + showdownName
+  )
+  // .catch(() => {
+  //   return fetch(
+  //     "https://pokeapi.co/api/v2/pokemon/" + formattedName.split("-")[0]
+  //   );
+  // });
 
   const pokemonSprite = await pokemonInfoRequest
     .json()
