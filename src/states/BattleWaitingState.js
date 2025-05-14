@@ -21,10 +21,93 @@ class BattleWaitingState {
     this.player1Gestures = player1Gestures.slice();
     this.player2Gestures = player2Gestures.slice();
     // map gestures to move
+    this.updatePlayerReadiness();
   }
 
-  updatePlayersReady() {
+  checkPlayersReady() {
     return this.player1Done && this.player2Done;
+  }
+
+  updatePlayerDone(playerNumber, action) {
+    let playerBattleState;
+    if (playerNumber === 1) {
+      playerBattleState = this.p1Parsed;
+    } else if (playerNumber === 2) {
+      playerBattleState = this.p2Parsed;
+    }
+
+    if (playerNumber === 1) {
+      this.player1Action = action;
+    } else {
+      this.player2Action = action;
+    }
+    const [actionType, selection] = action.split(" ");
+    const choice = Number(selection);
+    switch (playerBattleState.type) {
+      case "active":
+        if (actionType === "move") {
+          const move = playerBattleState.moves.filter(
+            (move) => move.slot === choice
+          );
+          if (move.length !== 0 && !move[0].disabled) {
+            return true;
+          }
+        } else if (actionType === "switch") {
+          if (
+            !playerBattleState.party[choice].active &&
+            !playerBattleState.party[choice].condition[0] !== "0"
+          ) {
+            return true;
+          }
+        }
+        return false;
+        break;
+      case "wait":
+        if (playerNumber === 1) {
+          this.player1Action = "";
+        } else {
+          this.player2Action = "";
+        }
+        return true;
+        break;
+      case "switch":
+        if (actionType === "move") {
+          return false;
+        } else if (actionType === "switch") {
+          const choice = Number(selection);
+          if (
+            !playerBattleState.party[choice].active &&
+            !playerBattleState.party[choice].condition[0] !== "0"
+          ) {
+            return true;
+          }
+        }
+        return false;
+        break;
+    }
+  }
+
+  updatePlayerReadiness() {
+    // poll for gesture
+    this.player1Done = this.updatePlayerDone(
+      1,
+      gestureToOption(this.player1Gestures[0])
+    );
+    this.player2Done = this.updatePlayerDone(
+      2,
+      gestureToOption(this.player2Gestures[0])
+    );
+
+    console.log(
+      `p1 done: ${this.player1Done}, ` +
+        `p1 action: ${this.player1Action}, ` +
+        `p2 done: ${this.player2Done}, ` +
+        `p2 action: ${this.player2Action}`
+    );
+  }
+
+  isOver() {
+    return this.checkPlayersReady();
   }
 
   async display() {
@@ -41,15 +124,6 @@ class BattleWaitingState {
     this.preparePlayerDisplay(1);
     this.preparePlayerDisplay(2);
   }
-
-  checkPlayerGestures() {
-    //get player gestures
-    return [this.player1Gesture, this.player2Gesture];
-  }
-
-  updatePlayerActions() {}
-
-  isStateDone() {}
 
   async preparePlayerDisplay(playerNumber) {
     const moveGestures = [
