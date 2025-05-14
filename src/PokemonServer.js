@@ -45,6 +45,9 @@ let getState = async () => {
     p2_updated_promise(),
     omni_updated_promise(),
   ]);
+  console.log(p1);
+  console.log(p2);
+  console.log(omni);
   return { p1, p2, omni };
 };
 

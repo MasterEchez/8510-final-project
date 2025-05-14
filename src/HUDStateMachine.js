@@ -46,6 +46,36 @@ class HUDStateMachine {
         }
         break;
       case battleStates.BATTLE_WAITING:
+        if (this.state.isOver()) {
+          if (this.timer === 0) {
+            this.timer = Date.now();
+          } else if (Date.now() - this.timer > 1000) {
+            console.log("YES!");
+            await fetch("http://localhost:3000/moves", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                p1: this.state.player1Action,
+                p2: this.state.player2Action
+              }),
+            })
+              .then((response) => {
+                return response.json();
+              })
+              .then((responseData) => {
+                console.log(responseData);
+                this.state = new BattleShowState(
+                  responseData.p1,
+                  responseData.p2,
+                  responseData.omni
+                );
+              });
+
+            this.timer = 0;
+          }
+        }
         break;
       case battleStates.BATTLE_SHOW:
         if (this.state.isOver()) {
