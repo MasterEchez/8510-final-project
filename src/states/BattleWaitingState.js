@@ -204,6 +204,7 @@ class BattleWaitingState {
       activePokemonSpriteElement.classList.add("mirror");
     }
     activePokemonSpriteElement.setAttribute("src", await activePokemonSprite);
+    activePokemonSpriteElement.setAttribute("alt", activePokemon.name);
     activePokemonSpriteElement.classList.add("sprite");
 
     const possiblePokemonSwitchesContainer = document.createElement("div");
@@ -211,6 +212,7 @@ class BattleWaitingState {
       const switchElement = document.createElement("img");
       const pokemonSprite = getPokemonSpriteURL(pokemon.name); //needs to be awaited
       switchElement.setAttribute("src", await pokemonSprite);
+      switchElement.setAttribute("alt", pokemon.name);
       switchElement.setAttribute("class", "resting-pokemon");
       if (pokemon.condition[0] === "0") {
         //if pokemon has fainted
