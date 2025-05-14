@@ -17,6 +17,29 @@ const gestures = {
   GESTURE_9: "gesture_9",
 };
 
+function getGestureEmoji(gesture) {
+  switch (gesture) {
+    case gestures.THUMBS_UP:
+      return "👍";
+    case gestures.THUMBS_DOWN:
+      return "👎";
+    case gestures.VICTORY:
+      return "✌️";
+    case gestures.POINTING_UP:
+      return "☝";
+    case gestures.CLOSED_FIST:
+      return "✊";
+    case gestures.OPEN_PALM:
+      return "👋";
+    case gestures.LOVE:
+      return "🤟";
+    case gestures.GESTURE_8:
+      return "";
+    case gestures.GESTURE_9:
+      return "";
+  }
+}
+
 function gestureToOption(gesture) {
   switch (gesture) {
     case gestures.THUMBS_UP:
