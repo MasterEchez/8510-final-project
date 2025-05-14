@@ -220,10 +220,15 @@ async function getPokemonSpriteURL(pokemonName) {
   const formattedName = lowercaseName.replace(" ", "-");
   const pokemonInfoRequest = await fetch(
     "https://pokeapi.co/api/v2/pokemon/" + formattedName
-  );
+  ).catch(() => {
+    return fetch(
+      "https://pokeapi.co/api/v2/pokemon/" + formattedName.split("-")[0]
+    );
+  });
 
   const pokemonSprite = await pokemonInfoRequest
     .json()
+    .catch(() => "")
     .then((pokemonData) => pokemonData.sprites.front_default);
 
   return pokemonSprite;
