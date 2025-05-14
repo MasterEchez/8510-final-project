@@ -74,6 +74,8 @@ class HUDStateMachine {
     players.setAttribute("id", "players");
     player1.setAttribute("id", "player1");
     player2.setAttribute("id", "player2");
+    player1.setAttribute("class", "player");
+    player2.setAttribute("class", "player");
 
     removeAllChildren(hud);
 

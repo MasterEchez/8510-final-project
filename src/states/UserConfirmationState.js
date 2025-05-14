@@ -28,12 +28,14 @@ class UserConfirmationState {
       const player1 = document.getElementById("player1");
       const checkMark = createElementWithText("span", "✅");
       player1.appendChild(checkMark);
+      player1.style.justifyContent = "center";
     }
 
     if (this.player2Ready) {
       const player2 = document.getElementById("player2");
       const checkMark = createElementWithText("span", "✅");
       player2.appendChild(checkMark);
+      player2.style.justifyContent = "center";
     }
   }
 

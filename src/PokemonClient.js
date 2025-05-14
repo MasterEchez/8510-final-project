@@ -143,7 +143,7 @@ async function predictWebcam() {
       player2Gestures.slice()
     );
     await headsUpDisplay.stateTransition();
-    headsUpDisplay.display();
+    await headsUpDisplay.display();
   }
   // Call this function again to keep predicting when the browser is ready.
   window.requestAnimationFrame(predictWebcam);
