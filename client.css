@@ -132,6 +132,11 @@ h1 {
   border: 1px solid black;
 }
 
+.switching-container > div {
+  display: flex;
+  flex-direction: column;
+}
+
 .switching-emoji {
   margin: 0;
   padding: 5px 0;
