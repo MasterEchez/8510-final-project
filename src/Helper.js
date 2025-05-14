@@ -215,7 +215,7 @@ function parseOmniState(omniState) {
   return animList;
 }
 
-async function getPokemonSpriteURL(pokemonName) {
+async function getPokemonSpriteURL(pokemonName, backupImage = false) {
   const lowercaseName = pokemonName.toLowerCase();
   const formattedName = lowercaseName.replace(" ", "-");
   const pokemonInfoRequest = await fetch(
@@ -228,8 +228,14 @@ async function getPokemonSpriteURL(pokemonName) {
 
   const pokemonSprite = await pokemonInfoRequest
     .json()
-    .catch(() => "")
-    .then((pokemonData) => pokemonData.sprites.front_default);
+    .then((pokemonData) => pokemonData.sprites.front_default)
+    .catch(() => {
+      if (backupImage) {
+        return "img/Pokeball.png";
+      } else {
+        return "";
+      }
+    });
 
   return pokemonSprite;
 }

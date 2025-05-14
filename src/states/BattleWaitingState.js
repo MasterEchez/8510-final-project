@@ -76,15 +76,15 @@ class BattleWaitingState {
 
     const topHUDPlayer = document.createElement("div");
     const bottomHUDPlayer = document.createElement("div");
-    topHUDPlayer.setAttribute("class", "top-battle-hud");
-    bottomHUDPlayer.setAttribute("class", "bottom-battle-hud");
+    topHUDPlayer.classList.add("top-battle-hud");
+    bottomHUDPlayer.classList.add("bottom-battle-hud");
 
     // variables
     const activePokemon = playerBattleState.party.find(
       (pokemon) => pokemon.active
     );
     const activePokemonMoves = playerBattleState.moves;
-    const activePokemonSprite = getPokemonSpriteURL(activePokemon.name); //needs to be awaited
+    const activePokemonSprite = getPokemonSpriteURL(activePokemon.name, true); //needs to be awaited
     const restingPokemon = playerBattleState.party.filter(
       (pokemon) => !pokemon.active
     );
@@ -102,7 +102,6 @@ class BattleWaitingState {
     activePokemonHPElement.classList.add("pokemon-hp");
     const activePokemonMovesContainer = document.createElement("div");
     activePokemonMovesContainer.setAttribute("id", "moves");
-    // for (const move of activePokemonMoves) {
     for (let i = 0; i < activePokemonMoves.length; i++) {
       const move = activePokemonMoves[i];
       const gesture = moveGestures[i];
@@ -110,9 +109,9 @@ class BattleWaitingState {
 
       // elements
       const moveElement = document.createElement("div");
-      moveElement.setAttribute("class", "move");
+      moveElement.classList.add("move");
       if (move.disabled) {
-        moveElement.setAttribute("class", "disabled");
+        moveElement.classList.add("disabled");
       }
 
       const moveNameElement = createElementWithText("p", move.move);
@@ -140,14 +139,15 @@ class BattleWaitingState {
       const pokemonSprite = getPokemonSpriteURL(pokemon.name); //needs to be awaited
       switchElement.setAttribute("src", await pokemonSprite);
       switchElement.setAttribute("alt", pokemon.name);
-      switchElement.setAttribute("class", "resting-pokemon");
+      switchElement.classList.add("resting-pokemon");
       if (pokemon.condition[0] === "0") {
         //if pokemon has fainted
-        switchElement.setAttribute("class", "fainted");
+        switchElement.classList.add("fainted");
       }
 
       possiblePokemonSwitchesContainer.appendChild(switchElement);
     }
+    possiblePokemonSwitchesContainer.classList.add("switching-container");
 
     topHUDPlayer.appendChild(activePokemonNameElement);
     topHUDPlayer.appendChild(activePokemonHPElement);
