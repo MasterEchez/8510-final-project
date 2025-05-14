@@ -7,8 +7,8 @@ class BattleWaitingState {
     this.player2Done = false;
     this.player1Action;
     this.player2Action;
-    this.player1Gesture;
-    this.player2Gesture;
+    this.player1Gestures = [];
+    this.player2Gestures = [];
     this.p1Parsed = parsePlayerState(this.player1BattleState);
     this.p2Parsed = parsePlayerState(this.player2BattleState);
   }
@@ -17,13 +17,19 @@ class BattleWaitingState {
     return battleStates.BATTLE_WAITING;
   }
 
+  updateState(player1Gestures, player2Gestures) {
+    this.player1Gestures = player1Gestures.slice();
+    this.player2Gestures = player2Gestures.slice();
+    // map gestures to move
+  }
+
   updatePlayersReady() {
     return this.player1Done && this.player2Done;
   }
 
-  display() {
-    console.log(this.p1Parsed);
-    console.log(this.p2Parsed);
+  async display() {
+    // console.log(this.p1Parsed);
+    // console.log(this.p2Parsed);
     const hud = document.getElementById("hud");
     const players = document.getElementById("players");
 
@@ -31,21 +37,197 @@ class BattleWaitingState {
 
     hud.insertBefore(header, players);
 
-    // get gesture
-    const [p1, p2] = this.checkPlayerGestures();
-    const p1_gesture = createElementWithText("span", p1);
-    player1.appendChild(p1_gesture);
+    // Rest of HUD
+    this.preparePlayerDisplay(1);
+    this.preparePlayerDisplay(2);
+    // const player1 = document.getElementById("player1");
+    // const player2 = document.getElementById("player2");
+
+    // const topHUDPlayer1 = document.createElement("div");
+    // const bottomHUDPlayer1 = document.createElement("div");
+    // topHUDPlayer1.setAttribute("class", "top-battle-hud");
+    // bottomHUDPlayer1.setAttribute("class", "bottom-battle-hud");
+
+    // const topHUDPlayer2 = document.createElement("div");
+    // const bottomHUDPlayer2 = document.createElement("div");
+    // topHUDPlayer2.setAttribute("class", "top-battle-hud");
+    // bottomHUDPlayer2.setAttribute("class", "bottom-battle-hud");
+
+    // let player1PokemonName;
+    // let player1PokemonHP;
+    // let player1PokemonMoves;
+    // let player1PokemonSwitches;
+    // let player2PokemonName;
+    // let player2PokemonHP;
+    // let player2PokemonMoves;
+    // let player2PokemonSwitches;
+
+    // const player1PokemonSpriteElement = document.createElement("img");
+    // const player2PokemonSpriteElement = document.createElement("img");
+    // player1PokemonSpriteElement.setAttribute("id", "p1-pokemon-sprite");
+
+    // // Player 1
+    // const player1ActivePokemon = this.p1Parsed.party.find(
+    //   (pokemon) => pokemon.active
+    // );
+    // const player1ActivePokemonMoves = this.p1Parsed.moves;
+    // const player1OtherPokemon = this.p1Parsed.party.filter(
+    //   (pokemon) => !pokemon.active
+    // );
+
+    // player1PokemonName = createElementWithText("h2", player1ActivePokemon.name);
+    // player1PokemonHP = createElementWithText(
+    //   "div",
+    //   player1ActivePokemon.condition
+    // );
+    // player1PokemonMoves = document.createElement("div");
+    // for (const move of player1ActivePokemonMoves) {
+    //   const moveElement = createElementWithText("div", move.move);
+    //   moveElement.setAttribute("class", "move");
+    //   if (move.disabled) {
+    //     moveElement.setAttribute("class", "disabled");
+    //   }
+
+    //   player1PokemonMoves.appendChild(moveElement);
+    // }
+    // const player1PokemonSpriteRequest = await fetch(
+    //   "https://pokeapi.co/api/v2/pokemon/" +
+    //     player1ActivePokemon.name.toLowerCase()
+    // );
+    // const player1PokemonSprite = await player1PokemonSpriteRequest
+    //   .json()
+    //   .then((pokemonData) => pokemonData.sprites.front_default);
+    // player1PokemonSpriteElement.setAttribute("src", player1PokemonSprite);
+    // player1PokemonSpriteElement.setAttribute("class", "sprite");
+    // player1PokemonSwitches = document.createElement("div");
+    // for (const pokemonSwitch of player1OtherPokemon) {
+    //   const switchElement = createElementWithText("div", pokemonSwitch.name);
+    //   //get sprite (write helper function)
+    //   switchElement.setAttribute("class", "resting-pokemon");
+    //   if (pokemonSwitch.condition[0] === "0") {
+    //     //if pokemon has fainted
+    //     switchElement.setAttribute("class", "fainted");
+    //   }
+
+    //   player1PokemonSwitches.appendChild(switchElement);
+    // }
+
+    // topHUDPlayer1.appendChild(player1PokemonName);
+    // topHUDPlayer1.appendChild(player1PokemonHP);
+    // topHUDPlayer1.appendChild(player1PokemonMoves);
+    // bottomHUDPlayer1.appendChild(player1PokemonSpriteElement);
+    // bottomHUDPlayer1.appendChild(player1PokemonSwitches);
+
+    // player1.appendChild(topHUDPlayer1);
+    // player1.appendChild(bottomHUDPlayer1);
+    // player1.style.justifyContent = "space-between";
 
     // get gesture
-    const p2_gesture = createElementWithText("span", p2);
-    player2.appendChild(p2_gesture);
+    // const [p1, p2] = this.checkPlayerGestures();
+    // const p1_gesture = createElementWithText("span", p1);
+    // player1.appendChild(p1_gesture);
+
+    // get gesture
+    // const p2_gesture = createElementWithText("span", p2);
+    // player2.appendChild(p2_gesture);
   }
 
   checkPlayerGestures() {
+    //get player gestures
     return [this.player1Gesture, this.player2Gesture];
   }
 
   updatePlayerActions() {}
 
   isStateDone() {}
+
+  async preparePlayerDisplay(playerNumber) {
+    const playerElement = document.getElementById(`player${playerNumber}`);
+    let playerBattleState;
+    if (playerNumber === 1) {
+      playerBattleState = this.p1Parsed;
+    } else if (playerNumber === 2) {
+      playerBattleState = this.p2Parsed;
+    }
+
+    const topHUDPlayer = document.createElement("div");
+    const bottomHUDPlayer = document.createElement("div");
+    topHUDPlayer.setAttribute("class", "top-battle-hud");
+    bottomHUDPlayer.setAttribute("class", "bottom-battle-hud");
+
+    // elements
+    // let activePokemonName;
+    // let activePokemonHP;
+    // let activePokemonMovesContainer;
+    // let restingPokemonContainer;
+
+    // variables
+    const activePokemon = playerBattleState.party.find(
+      (pokemon) => pokemon.active
+    );
+    const activePokemonMoves = playerBattleState.moves;
+    const activePokemonSprite = getPokemonSpriteURL(activePokemon.name); //needs to be awaited
+    const restingPokemon = playerBattleState.party.filter(
+      (pokemon) => !pokemon.active
+    );
+
+    //elements
+    const activePokemonNameElement = createElementWithText(
+      "h2",
+      activePokemon.name
+    );
+    const activePokemonHPElement = createElementWithText(
+      "div",
+      activePokemon.condition
+    );
+    const activePokemonMovesContainer = document.createElement("div");
+    for (const move of activePokemonMoves) {
+      const moveElement = createElementWithText("div", move.move);
+      moveElement.setAttribute("class", "move");
+      if (move.disabled) {
+        moveElement.setAttribute("class", "disabled");
+      }
+
+      activePokemonMovesContainer.appendChild(moveElement);
+    }
+
+    // const player1PokemonSpriteRequest = await fetch(
+    //   "https://pokeapi.co/api/v2/pokemon/" +
+    //     player1ActivePokemon.name.toLowerCase()
+    // );
+    // const player1PokemonSprite = await player1PokemonSpriteRequest
+    //   .json()
+    //   .then((pokemonData) => pokemonData.sprites.front_default);
+
+    const activePokemonSpriteElement = document.createElement("img");
+    if (playerNumber === 1) {
+      activePokemonSpriteElement.classList.add("mirror");
+    }
+    activePokemonSpriteElement.setAttribute("src", await activePokemonSprite);
+    activePokemonSpriteElement.classList.add("sprite");
+
+    const possiblePokemonSwitchesContainer = document.createElement("div");
+    for (const pokemon of restingPokemon) {
+      const switchElement = document.createElement("img");
+      const pokemonSprite = getPokemonSpriteURL(pokemon.name); //needs to be awaited
+      switchElement.setAttribute("src", await pokemonSprite);
+      switchElement.setAttribute("class", "resting-pokemon");
+      if (pokemon.condition[0] === "0") {
+        //if pokemon has fainted
+        switchElement.setAttribute("class", "fainted");
+      }
+
+      possiblePokemonSwitchesContainer.appendChild(switchElement);
+    }
+
+    topHUDPlayer.appendChild(activePokemonNameElement);
+    topHUDPlayer.appendChild(activePokemonHPElement);
+    topHUDPlayer.appendChild(activePokemonMovesContainer);
+    bottomHUDPlayer.appendChild(activePokemonSpriteElement);
+    bottomHUDPlayer.appendChild(possiblePokemonSwitchesContainer);
+
+    playerElement.appendChild(topHUDPlayer);
+    playerElement.appendChild(bottomHUDPlayer);
+    playerElement.style.justifyContent = "space-between";
+  }
 }

@@ -191,3 +191,17 @@ function parseOmniState(omniState) {
   });
   return animList;
 }
+
+async function getPokemonSpriteURL(pokemonName) {
+  const lowercaseName = pokemonName.toLowerCase();
+  const formattedName = lowercaseName.replace(" ", "-");
+  const pokemonInfoRequest = await fetch(
+    "https://pokeapi.co/api/v2/pokemon/" + formattedName
+  );
+
+  const pokemonSprite = await pokemonInfoRequest
+    .json()
+    .then((pokemonData) => pokemonData.sprites.front_default);
+
+  return pokemonSprite;
+}

@@ -48,16 +48,18 @@ class HUDStateMachine {
       case battleStates.BATTLE_WAITING:
         break;
       case battleStates.BATTLE_SHOW:
-        // const [player1BattleState, player2BattleState, omniBattleState] = [
-        //   this.state.player1BattleState,
-        //   this.state.player2BattleState,
-        //   this.state.omniBattleState,
-        // ];
-        // this.state = new BattleWaitingState(
-        //   player1BattleState,
-        //   player2BattleState,
-        //   omniBattleState
-        // );
+        if (this.state.isOver()) {
+          const [player1BattleState, player2BattleState, omniBattleState] = [
+            this.state.player1BattleState,
+            this.state.player2BattleState,
+            this.state.omniBattleState,
+          ];
+          this.state = new BattleWaitingState(
+            player1BattleState,
+            player2BattleState,
+            omniBattleState
+          );
+        }
         break;
       case battleStates.BATTLE_OVER:
         break;

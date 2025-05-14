@@ -78,7 +78,7 @@ h1 {
   align-items: center;
 }
 
-#p1-pokemon-sprite {
+.mirror {
   transform: rotateY(180deg);
 }
 

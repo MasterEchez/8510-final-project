@@ -38,15 +38,10 @@ class BattleShowState {
     topHUDPlayer2.setAttribute("class", "top-battle-hud");
     bottomHUDPlayer2.setAttribute("class", "bottom-battle-hud");
 
-    // const header = createElementWithText("h1", "Animating");
-
-    // hud.insertBefore(header, players);
     let player1PokemonName;
     let player1PokemonHP;
-    // let player1PokemonSprite;
     let player2PokemonName;
     let player2PokemonHP;
-    // let player2PokemonSprite;
 
     const player1PokemonSprite = document.createElement("img");
     const player2PokemonSprite = document.createElement("img");
@@ -113,5 +108,7 @@ class BattleShowState {
     // }
   }
 
-  isStateDone() {}
+  isOver() {
+    return true;
+  }
 }
