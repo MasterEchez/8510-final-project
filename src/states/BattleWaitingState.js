@@ -134,17 +134,27 @@ class BattleWaitingState {
     activePokemonSpriteElement.classList.add("sprite");
 
     const possiblePokemonSwitchesContainer = document.createElement("div");
-    for (const pokemon of restingPokemon) {
-      const switchElement = document.createElement("img");
+    for (let i = 0; i < restingPokemon.length; i++) {
+      const pokemon = restingPokemon[i];
       const pokemonSprite = getPokemonSpriteURL(pokemon.name); //needs to be awaited
-      switchElement.setAttribute("src", await pokemonSprite);
-      switchElement.setAttribute("alt", pokemon.name);
-      switchElement.classList.add("resting-pokemon");
+      const gesture = switchingGestures[i];
+      const emoji = getGestureEmoji(gesture);
+
+      // elements
+      const switchElement = document.createElement("div");
       if (pokemon.condition[0] === "0") {
         //if pokemon has fainted
         switchElement.classList.add("fainted");
       }
+      const pokemonSpriteElement = document.createElement("img");
+      pokemonSpriteElement.setAttribute("src", await pokemonSprite);
+      pokemonSpriteElement.setAttribute("alt", pokemon.name);
+      pokemonSpriteElement.classList.add("resting-pokemon");
+      const pokemonEmojiElement = createElementWithText("p", emoji);
+      pokemonEmojiElement.classList.add("switching-emoji");
 
+      switchElement.appendChild(pokemonSpriteElement);
+      switchElement.appendChild(pokemonEmojiElement);
       possiblePokemonSwitchesContainer.appendChild(switchElement);
     }
     possiblePokemonSwitchesContainer.classList.add("switching-container");

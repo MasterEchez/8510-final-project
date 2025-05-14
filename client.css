@@ -124,12 +124,17 @@ h1 {
 .resting-pokemon {
   height: 70px;
   width: 70px;
-  background-color: white;
-  border: 1px solid black;
 }
 
 .switching-container {
   display: flex;
+  background-color: white;
+  border: 1px solid black;
+}
+
+.switching-emoji {
+  margin: 0;
+  padding: 5px 0;
 }
 
 /*
